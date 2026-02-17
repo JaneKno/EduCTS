@@ -8,7 +8,7 @@ library(shinythemes)
 library(shinyjs)
 
 # ============= APP CONFIGURATION =============
-models_dir <- "/../../models/"
+models_dir <- "/../models/"
 CTS_SUBDIR <- "subdir"
 CARDS_PER_ROW <- 3
 MIN_YEAR_DEFAULT <- 2000
@@ -93,7 +93,6 @@ get_model_metadata <- function(models_dir) {
     date_last_updated = NA_character_,
     year = NA_integer_,
     model_type = NA_character_,
-    model_file_type = NA_character_,
     validation_status = NA_character_,
     compound = NA_character_,
     source = NA_character_,
@@ -171,6 +170,54 @@ ui1 <- fluidPage(
         border-color: #337ab7;
         background: #e8f4f8;
       }
+      .info-icon {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        border-radius: 50%;
+        background-color: #5bc0de;
+        color: white;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 5px;
+        cursor: help;
+        position: relative;
+      }
+      .info-icon:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        margin-left: 10px;
+        width: 300px;
+        background-color: #333;
+        color: white;
+        padding: 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: normal;
+        z-index: 1000;
+        white-space: normal;
+        transform: translateY(-50%);
+      }
+      .info-icon:hover::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        width: 0;
+        height: 0;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-right: 8px solid #333;
+        z-index: 1000;
+        transform: translateY(-50%);
+      }
+      .welcome-btn {
+        margin-bottom: 15px;
+      }
     "))
   ),
   
@@ -178,13 +225,53 @@ ui1 <- fluidPage(
   conditionalPanel(
     condition = "output.show_library == true",
     #tags$img(src = "Modellibraryheader.png", class = "header-image"),
+    
+    # ========== Compact Welcome Button ==========
+    div(class = "welcome-btn", style = "margin: 10px; text-align: right;",
+      actionButton("toggle_welcome", "Show Welcome", class = "btn-sm")
+    ),
+    
+    # ========== Collapsible Welcome Panel ==========
+    conditionalPanel(
+      condition = "input.toggle_welcome % 2 == 1",
+      div(class = "alert alert-info", style = "margin: 10px; padding: 12px; border-radius: 5px;",
+        tags$h5("Getting Started with EduCTS", style = "margin-top: 0;"),
+        tags$ul(style = "margin: 5px 0 0 0;",
+          tags$li(tags$strong("Summary View"), " - Overview of models by therapeutic area and type"),
+          tags$li(tags$strong("Cards View"), " - Browse and select individual models for simulation"),
+          tags$li(tags$strong("Help Tab"), " - Detailed explanations of features and concepts")
+        )
+      )
+    ),
+    
     sidebarLayout(
       sidebarPanel(
         width = 2,
-        checkboxGroupInput("filter_type", "Model type", choices = NULL),
-        selectInput("filter_filetype", "Model file type", choices = NULL, multiple = TRUE),
-        selectInput("filter_therapeutic_area", "Therapeutic Area", choices = NULL, multiple = TRUE),
-        selectInput("filter_indication", "Indication", choices = NULL, multiple = TRUE),
+        tags$h5("Filter Models", style = "margin-top: 0;"),
+        
+        div(style = "display: flex; align-items: center; margin-bottom: 10px;",
+          tags$label("Model type", style = "margin-bottom: 0;"),
+          div(class = "info-icon", `data-tooltip` = "PK: absorption and distribution. PKPD: includes drug effects on body",
+            tags$span("?", style = "font-size: 14px;")
+          )
+        ),
+        checkboxGroupInput("filter_type", NULL, choices = NULL),
+        
+        div(style = "display: flex; align-items: center; margin-bottom: 10px;",
+          tags$label("Therapeutic Area", style = "margin-bottom: 0;"),
+          div(class = "info-icon", `data-tooltip` = "Disease category (e.g., Cardiovascular, Metabolic Disorders)",
+            tags$span("?", style = "font-size: 14px;")
+          )
+        ),
+        selectInput("filter_therapeutic_area", NULL, choices = NULL, multiple = TRUE),
+        
+        div(style = "display: flex; align-items: center; margin-bottom: 10px;",
+          tags$label("Indication", style = "margin-bottom: 0;"),
+          div(class = "info-icon", `data-tooltip` = "Specific medical condition the model can be used for",
+            tags$span("?", style = "font-size: 14px;")
+          )
+        ),
+        selectInput("filter_indication", NULL, choices = NULL, multiple = TRUE),
         uiOutput("year_slider")
       ),
       mainPanel(
@@ -227,6 +314,48 @@ ui1 <- fluidPage(
           ),
             uiOutput("model_cards_header"),
             uiOutput("model_cards")
+          ),
+          tabPanel("Help",
+            tags$h3("Getting Started with EduCTS"),
+            tags$h4("Overview"),
+            tags$p("EduCTS is an educational tool for exploring pharmacokinetic-pharmacodynamic (PKPD) and pharmacokinetic (PK) models.
+                   You can browse models, review their validation against clinical data, and run virtual clinical trial simulations."),
+            
+            tags$h4("Key Concepts"),
+            tags$strong("Pharmacokinetics (PK):"),
+            tags$p("How the body absorbs, distributes, metabolizes, and eliminates a drug."),
+            tags$strong("Pharmacodynamics (PD):"),
+            tags$p("How the drug affects the body - the relationship between drug concentration and beneficial/harmful effects."),
+            tags$strong("PKPD Model:"),
+            tags$p("A mathematical model that combines both PK and PD to predict clinical outcomes."),
+            
+            tags$h4("Workflow"),
+            tags$ol(
+              tags$li(tags$strong("Browse Models"), " - Use Summary View to see available models or Cards View to search and filter"),
+              tags$li(tags$strong("Select a Model"), " - Click on a model card to view details."),
+              tags$li(tags$strong("Run Simulation"), " - Click 'Clinical Trial Simulation' to set up and run a virtual trial"),
+              tags$li(tags$strong("Explore Results"), " - View simulated outcomes and compare the model predictions against validation data")
+            ),
+            
+            tags$h4("Filter Guide"),
+            tags$strong("Model Type:"),
+            tags$p("PK - Describes drug pharmacokinetics only. PKPD - Describes both PK and pharmacodynamic effects."),
+            tags$strong("Therapeutic Area:"),
+            tags$p("The disease category the model is designed for (e.g., Cardiovascular, Metabolic Disorders)."),
+            tags$strong("Indication:"),
+            tags$p("The specific medical condition the model addresses (e.g., Hypercholesterolemia, Hypertriglyceridemia)."),
+            
+            tags$h4("Understanding Validation"),
+            tags$p("Each model includes validation results comparing model predictions to actual clinical trial data.
+                   This demonstrates how well the model captures real drug behavior and supports its use in simulations."),
+            
+            tags$h4("Tips"),
+            tags$ul(
+              tags$li("Hover over the ", tags$span("?", style = "display: inline-block; width: 16px; height: 16px; background-color: #5bc0de; color: white; border-radius: 50%; text-align: center; font-weight: bold; font-size: 12px;"), " icons next to filter names for quick tooltips"),
+              tags$li("Use the Summary View to get a quick overview of available models"),
+              tags$li("Use the Cards View to search for specific models by name or compound"),
+              tags$li("Click on a model card to view detailed information before running a simulation.")
+            )
           )
         )
       )
@@ -251,7 +380,6 @@ server <- function(input, output, session) {
   
   # Populate filter choices
   updateCheckboxGroupInput(session, "filter_type", choices = sort(unique(meta$model_type)))
-  updateSelectInput(session, "filter_filetype", choices = sort(unique(meta$model_file_type)))
   updateSelectInput(session, "filter_therapeutic_area", choices = sort(unique(meta$therapeutic_area)))
   updateSelectInput(session, "filter_indication", choices = sort(unique(meta$indication)))
   
@@ -301,9 +429,6 @@ server <- function(input, output, session) {
     m <- meta
     if (!is.null(input$filter_type) && length(input$filter_type) > 0) {
       m <- m[m$model_type %in% input$filter_type, ]
-    }
-    if (!is.null(input$filter_filetype) && length(input$filter_filetype) > 0) {
-      m <- m[m$model_file_type %in% input$filter_filetype, ]
     }
     if (!is.null(input$filter_therapeutic_area) && length(input$filter_therapeutic_area) > 0) {
       m <- m[m$therapeutic_area %in% input$filter_therapeutic_area, ]

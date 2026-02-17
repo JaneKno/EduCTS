@@ -8,7 +8,7 @@ library(plotly)
 library(readr)
 library(digest)
 
-models_dir <- "../../models/" # Adjust path as needed
+models_dir <- "../models/" # Adjust path as needed
 
 # Modify the main function
 generate_input_dataset <- function(treatment_groups, study_length_weeks, design = "parallel", washout_weeks = 4, model_time_unit, input_compartment = "DEPOT", dose_unit = "mg", model_dose_unit = "mg") {
@@ -358,9 +358,9 @@ transform_simulation_data <- function(summaries, output_var, transformation_type
   # Normalize transformation type
   trans_lower <- tolower(transformation_type)
   is_percent_change_target <- grepl("percent|%", trans_lower) && grepl("change|baseline", trans_lower)
-  is_change_target <- (grepl("change", trans_lower) && !is_percent_change) || trans_lower == "change"
+  is_change_target <- (grepl("change", trans_lower) && !is_percent_change_target) || trans_lower == "change"
   
-  if (!is_percent_change && !is_change) {
+  if (!is_percent_change_target && !is_change_target) {
     # Unknown transformation, return as is
     return(summaries)
   }
@@ -439,6 +439,9 @@ server <- function(input, output, session) {
   # Load metadata for ALL models
   models_metadata <- lapply(model_filenames, function(fname) {
     json_path <- file.path(models_dir, sub("\\.cpp$", ".json", fname))
+    cat("DEBUG: Processing model file:", fname, "\n")
+    cat("DEBUG: Looking for JSON at:", json_path, "\n")
+    cat("DEBUG: JSON file exists:", file.exists(json_path), "\n")
     full_json <- NULL  # Store full JSON for validation data
     
     meta <- list(
@@ -458,7 +461,11 @@ server <- function(input, output, session) {
     )
     
     if (file.exists(json_path)) {
+      cat("DEBUG: JSON file found! Loading...\n")
       full_json <- fromJSON(json_path, simplifyDataFrame = FALSE)
+      cat("DEBUG: JSON loaded successfully. Root keys:", paste(names(full_json), collapse = ", "), "\n")
+      cat("DEBUG: Has internal_validation_data at root:", "internal_validation_data" %in% names(full_json), "\n")
+      cat("DEBUG: Has external_validation_data at root:", "external_validation_data" %in% names(full_json), "\n")
       json_meta <- full_json
       
       # Access model_information if it exists, otherwise use root level
@@ -514,18 +521,41 @@ server <- function(input, output, session) {
       
       # Load internal and external validation data if available
       if (!is.null(full_json$internal_validation_data)) {
+        cat("DEBUG: ✓ FOUND internal_validation_data in JSON! Studies:", length(full_json$internal_validation_data$studies), "\n")
         meta$internal_validation_data <- full_json$internal_validation_data
         # For backward compatibility, use internal as default validation_data
         meta$validation_data <- full_json$internal_validation_data
+      } else {
+        cat("DEBUG: ✗ NO internal_validation_data found in JSON\n")
       }
       
       if (!is.null(full_json$external_validation_data)) {
+        cat("DEBUG: ✓ FOUND external_validation_data in JSON!\n")
         meta$external_validation_data <- full_json$external_validation_data
+      } else {
+        cat("DEBUG: ✗ NO external_validation_data found in JSON\n")
       }
+    } else {
+      cat("DEBUG: JSON file NOT FOUND at", json_path, "\n")
     }
     
     meta
   })
+
+# Debug output after loading all models' metadata
+cat("DEBUG: ===== MODELS METADATA LOADED =====\n")
+for (i in seq_len(n_models)) {
+  meta <- models_metadata[[i]]
+  model_name <- tools::file_path_sans_ext(basename(meta$filename))
+  cat("DEBUG: Model", i, ":", model_name, "\n")
+  cat("DEBUG:   - File:", meta$filename, "\n")
+  cat("DEBUG:   - Has internal_validation_data:", !is.null(meta$internal_validation_data), "\n")
+  cat("DEBUG:   - Has external_validation_data:", !is.null(meta$external_validation_data), "\n")
+  if (!is.null(meta$internal_validation_data) && !is.null(meta$internal_validation_data$studies)) {
+    cat("DEBUG:   - Internal validation studies:", length(meta$internal_validation_data$studies), "\n")
+  }
+}
+cat("DEBUG: ===== END METADATA =====\n")
 
 # ========== ADD THESE LINES ==========
   # Extract commonly used variables from first model's metadata
@@ -1643,7 +1673,7 @@ output$sim_result <- renderUI({
           model_idx_in_path <- which(parts == model_name)
           if (length(model_idx_in_path) > 0 && model_idx_in_path + 1 <= length(parts)) {
             study_folder_name <- parts[model_idx_in_path + 1]
-            study_cache_dir <- file.path("data", "derived", "validation", model_name, study_folder_name)
+            study_cache_dir <- file.path("../data/derived/", "validation", model_name, study_folder_name)
             # Create the directory immediately so arm summaries can be saved
             dir.create(study_cache_dir, recursive = TRUE, showWarnings = FALSE)
           }
@@ -1736,7 +1766,7 @@ output$sim_result <- renderUI({
         no_doses_from_data <- NULL  # To store number of doses from data file
         
         if (!is.null(data_location) && data_location != "") {
-          data_path <- file.path("../..", data_location)
+          data_path <- file.path("../", data_location)
           cat("DEBUG: Looking for data at:", data_path, "\n")
           if (file.exists(data_path)) {
             tryCatch({
@@ -2232,7 +2262,7 @@ output$sim_result <- renderUI({
           
           if (!is.null(data_location) && data_location != "") {
             cat("DEBUG PLOT: Looking for data at data_location:", data_location, "\n")
-            data_path <- file.path("../..", data_location)
+            data_path <- file.path("../", data_location)
             cat("DEBUG PLOT: Full path:", data_path, "\n")
             cat("DEBUG PLOT: File exists:", file.exists(data_path), "\n")
             if (file.exists(data_path)) {
@@ -2323,7 +2353,7 @@ output$sim_result <- renderUI({
                     observed_data <- observed_data_exact %>%
                       rename(label = output_var)
                   } else {
-                    cat("DEBUG PLOT: CSV variable names:", paste(csv_vars, collapse = ", "), "\n")
+                    cat("DEBUG PLOT: CSV variable names:", paste(names(obs_raw), collapse = ", "), "\n")
                     
                     observed_data <- obs_raw %>%
                       select(Time = "Time", 
@@ -2671,6 +2701,24 @@ output$sim_result <- renderUI({
     cat("\n========== VALIDATION INITIALIZATION START ==========\n")
     cat("DEBUG: Starting validation simulation on app initialization\n")
     cat("DEBUG: Total models loaded:", n_models, "\n")
+    
+    # DETAILED DEBUG: Show what's actually in models_metadata
+    cat("DEBUG: ===== DETAILED MODELS_METADATA DEBUG =====\n")
+    for (i in seq_len(n_models)) {
+      meta <- models_metadata[[i]]
+      model_name <- tools::file_path_sans_ext(basename(meta$filename))
+      cat("DEBUG: Model", i, "filename:", meta$filename, "\n")
+      cat("DEBUG:   - model_name:", model_name, "\n")
+      cat("DEBUG:   - meta class:", class(meta), "\n")
+      cat("DEBUG:   - meta keys:", paste(names(meta), collapse = ", "), "\n")
+      cat("DEBUG:   - internal_validation_data class:", class(meta$internal_validation_data), "\n")
+      cat("DEBUG:   - internal_validation_data is.null:", is.null(meta$internal_validation_data), "\n")
+      if (!is.null(meta$internal_validation_data)) {
+        cat("DEBUG:   - internal_validation_data keys:", paste(names(meta$internal_validation_data), collapse = ", "), "\n")
+        cat("DEBUG:   - internal_validation_data$studies length:", length(meta$internal_validation_data$studies), "\n")
+      }
+    }
+    cat("DEBUG: ===== END DETAILED DEBUG =====\n")
     
     # Check which models have what validation data
     for (i in seq_len(n_models)) {

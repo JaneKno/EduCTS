@@ -220,7 +220,7 @@ To add a new model:
    - Reference to clinical validation data
    - Study arms and data locations
 3. **Add clinical data** to `data/source/YourModel_PKPD_model/` as CSV files
-4. **Generate validation results** automatically placed in `data/derived/validation/` as `.rds` files
+4. **Generate validation results** automatically placed in `data/validation/` as `.rds` files
 5. **Test** by running the Shiny application and verifying your model appears
 
 ## References & Resources

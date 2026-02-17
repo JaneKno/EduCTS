@@ -1,0 +1,62 @@
+{
+  "model_name": "Olezarsen_PKPD_model",
+  "study_id": "STUDY_001",
+  "study_name": "Phase 1 Trial",
+  "study_data_source": "doi: 10.1093/eurheartj/ehz321",
+  "arms": [
+    {
+      "arm_name": "Olezarsen Placebo SD",
+      "frequency": "single_dose",
+      "dose": 0,
+      "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+    },
+    {
+      "arm_name": "Olezarsen 10 mg SD",
+      "frequency": "single_dose",
+      "dose": 10,
+      "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+    },
+    {
+      "arm_name": "Olezarsen 30 mg SD",
+      "frequency": "single_dose",
+      "dose": 30,
+      "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+    },
+    {
+      "arm_name": "Olezarsen 60 mg SD",
+      "frequency": "single_dose",
+      "dose": 60,
+      "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+    },
+    {
+      "arm_name": "Olezarsen 90 mg SD",
+      "frequency": "single_dose",
+      "dose": 90,
+      "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+    },
+    {
+      "arm_name": "Olezarsen 120 mg SD",
+      "frequency": "single_dose",
+      "dose": 120,
+      "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+    },
+    {
+      "arm_name": "Olezarsen Placebo Weekly",
+      "frequency": "Weekly",
+      "dose": 0,
+      "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+    },
+    {
+      "arm_name": "Olezarsen 15 mg Weekly",
+      "frequency": "Weekly",
+      "dose": 15,
+      "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+    },
+    {
+      "arm_name": "Olezarsen 30 mg Weekly",
+      "frequency": "Weekly",
+      "dose": 30,
+      "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+    }
+  ]
+}

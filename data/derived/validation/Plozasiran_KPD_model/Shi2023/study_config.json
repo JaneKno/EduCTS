@@ -1,0 +1,29 @@
+{
+  "model_name": "Plozasiran_KPD_model",
+  "study_id": "STUDY_001",
+  "study_name": "Phase 2 Trial",
+  "study_data_source": "https://www.certara.com/poster/population-k-pd-modeling-of-plozasiran-aro-apoc3-a-galnac-sirna-conjugate-for-the-treatment-of-patients-with-severe-hypertriglyceridemi/",
+  "arms": [
+    {
+      "arm_name": "Low Dose",
+      "dose": 10,
+      "frequency": "Once every 3 months",
+      "n_subjects": 1,
+      "data_location": "data/source/Plozasiran_KPD_model/Shi2023/Shi2023_simulatedPlozasiranModel.csv"
+    },
+    {
+      "arm_name": "Mid Dose",
+      "dose": 25,
+      "frequency": "Once every 3 months",
+      "n_subjects": 1,
+      "data_location": "data/source/Plozasiran_KPD_model/Shi2023/Shi2023_simulatedPlozasiranModel.csv"
+    },
+    {
+      "arm_name": "High Dose",
+      "dose": 50,
+      "frequency": "Once every 3 months",
+      "n_subjects": 1,
+      "data_location": "data/source/Plozasiran_KPD_model/Shi2023/Shi2023_simulatedPlozasiranModel.csv"
+    }
+  ]
+}

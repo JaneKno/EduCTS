@@ -1,0 +1,28 @@
+{
+  "model_information": {
+    "filename": "Eplontersen_PKPD_model.cpp",
+    "display_name": "Eplontersen Population PKPD Model",
+    "description": "Population PKPD model for Eplontersen (ARO-TTR02), an antisense oligonucleotide (ASO) targeting transthyretin. Features 2-compartment PK with subcutaneous absorption and TTR biomarker indirect response model with Emax inhibition of TTR synthesis.",
+    "author": "Jane Knochel",
+    "date_created": "2026-02-16",
+    "date_last_updated": "2026-02-16",
+    "year": 2022,
+    "model_type": "PKPD",
+    "model_file_type": "mrgsolve",
+    "validation_status": "Not Validated",
+    "compound": "Eplontersen (ARO-TTR02)",
+    "model_time_unit": "hours",
+    "input": "GUT",
+    "input_label": "Absorption from subcutaneous injection site",
+    "dose_unit": "mg",
+    "model_dose_unit": "ug",
+    "therapeutic_dose": "45",
+    "therapeutic_frequency": "Every 4 weeks",
+    "output": "DV_Cp, TTR, TTR_pct_change",
+    "output_label": "Plasma concentration (ng/mL), Transthyretin (mg/dL), % Change TTR",
+    "source": "doi.org/10.1111/bcp.15468",
+    "therapeutic_area": "Neurology",
+    "indication": "Transthyretin (TTR) Amyloidosis",
+    "applications": "Dose-selection, clinical trial simulation, PKPD modeling, TTR lowering prediction, patient stratification"
+  }
+}

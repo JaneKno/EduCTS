@@ -1,0 +1,5 @@
+library(shiny)
+source("CTS_ui.R")
+source("CTS_server.R")
+source("global.R")
+shinyApp(ui, server)#,options = list(port = 3839, launch.browser = FALSE))

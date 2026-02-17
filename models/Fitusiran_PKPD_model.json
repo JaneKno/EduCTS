@@ -1,0 +1,27 @@
+{
+  "model_information" :{"filename": "Fitusiran_PKPD_model.cpp",
+  "display_name": "Fitusiran PopK-PD Model",
+  "description": "Population K-PD model for fitusiran with antithrombin lowering via RISC-mediated inhibition of AT production.",
+  "author": "Jane Knochel",
+  "date_created": "2025-11-26",
+  "date_last_updated": "2025-11-26",
+  "year": 2024,
+  "model_type": "PKPD",
+  "model_file_type": "mrgsolve",
+  "validation_status": "Not Validated",
+  "compound": "Fitusiran",
+  "model_time_unit": "hours",
+  "input": "DEPOT",
+  "input_label": "Depot compartment",
+  "dose_unit": "mg",
+  "model_dose_unit": "N/A",
+  "therapeutic_dose": "NA",
+  "therapeutic_frequency": "NA",
+  "output": "DV_AT, CRISC_out, C_CENTRAL, AT",
+  "output_label": "Observed AT (%), RISC Concentration (mg/g), Central Liver Concentration (mg/g), Antithrombin (%)",
+  "source": "https://www.accessdata.fda.gov/drugsatfda_docs/nda/2025/219019Orig1s000IntegratedR.pdf",
+  "therapeutic_area": "Hematology",
+  "indication": "Hemophilia A and B with inhibitors",
+  "applications": "Dose-selection, clinical trial simulation, population PK-PD analysis"
+}
+}

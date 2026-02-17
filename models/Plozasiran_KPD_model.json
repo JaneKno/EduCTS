@@ -1,0 +1,112 @@
+{
+ "model_information" :{
+  "filename": "Plozasiran_KPD_model.cpp",
+  "display_name": "Plozasiran K-PD Model",
+  "description": "Population K-PD model for plozasiran with APOC3 and triglyceride lowering. Effect compartment model with indirect response for APOC3 (inhibition of synthesis) and TG (inhibition of degradation via APOC3).",
+  "author": "Jane Knochel",
+  "date_created": "2025-11-28",
+  "date_last_updated": "2025-11-28",
+  "year": 2024,
+  "model_type": "KPD",
+  "model_file_type": "mrgsolve",
+  "validation_status": "Fully Validated",
+  "compound": "Plozasiran",
+  "model_time_unit": "hours",
+  "input": "EFFECT",
+  "input_label": "Liver effect compartment",
+  "dose_unit": "mg",
+  "model_dose_unit": "mg",
+  "therapeutic_dose": "25",
+  "therapeutic_frequency": "Once every 3 months",
+  "output": "DV_APOC3, DV_TG, APOC3, TG, APOC3_pct_change, TG_pct_change, Ce_out",
+  "output_label": "Predicted APOC3 (mg/dL), Predicted TG (mg/dL), APOC3 (mg/dL), TG (mg/dL), % Change APOC3, % Change TG, Effect Compartment (mg)",
+  "source": "NDA Application - Plozasiran Clinical Pharmacology Review, Additional Figures Table 1 and Figure 1",
+  "therapeutic_area": "Metabolic Disorders",
+  "indication": "Severe Hypertriglyceridemia (SHTG)",
+  "applications": "Dose-selection, clinical trial simulation, K-PD modeling, APOC3 and TG lowering prediction"
+ },
+  "internal_validation_data":{
+    "studies" : [
+    {
+      "study_id": "STUDY_001",
+      "study_name": "Phase 2 Trial",
+      "study_length_days": 360,
+      "study_data_source": "https://www.certara.com/poster/population-k-pd-modeling-of-plozasiran-aro-apoc3-a-galnac-sirna-conjugate-for-the-treatment-of-patients-with-severe-hypertriglyceridemi/",
+      "arms": [
+        {
+          "arm_name": "Low Dose",
+          "dose": 10,
+          "frequency": "Once every 3 months",
+          "n_subjects": 1,
+          "data_location": "data/source/Plozasiran_KPD_model/Shi2023/Shi2023_simulatedPlozasiranModel.csv"
+        },{
+          "arm_name": "Mid Dose",
+          "dose": 25,
+          "frequency": "Once every 3 months",
+          "n_subjects": 1,
+          "data_location": "data/source/Plozasiran_KPD_model/Shi2023/Shi2023_simulatedPlozasiranModel.csv"
+        },
+        {
+          "arm_name": "High Dose",
+          "dose": 50,
+          "frequency": "Once every 3 months",
+          "n_subjects": 1,
+          "data_location": "data/source/Plozasiran_KPD_model/Shi2023/Shi2023_simulatedPlozasiranModel.csv"
+        }
+      ]
+  }
+  ]},
+  "external_validation_data":{
+    "studies" :[
+    {
+    "study_id": "STUDY_002",
+    "study_name": "Phase 2b Trial SHASTA-2 Severe Hypertriglyceridemia",
+    "study_length_weeks": 48,
+    "study_data_source": "doi:10.1001/jamacardio.2024.0959",
+    "arms": [
+      {
+        "arm_name": "Placebo Q3M",
+        "dose": 0,
+        "data_location": "data/source/Plozasiran_KPD_model/Gaudet2024/Gaudet2024_Phase2b.csv"
+      },
+      {
+        "arm_name": "Plozasiran 10 mg Q3M",
+        "dose": 10,
+        "data_location": "data/source/Plozasiran_KPD_model/Gaudet2024/Gaudet2024_Phase2b.csv"
+      },{
+        "arm_name": "Plozasiran 25 mg Q3M",
+        "dose": 25,
+        "data_location": "data/source/Plozasiran_KPD_model/Gaudet2024/Gaudet2024_Phase2b.csv"
+      },
+      {
+        "arm_name": "Plozasiran 50 mg Q3M",
+        "dose": 50,
+        "data_location": "data/source/Plozasiran_KPD_model/Gaudet2024/Gaudet2024_Phase2b.csv"
+      }
+    ]
+  },
+  {
+    "study_id": "STUDY_003",
+    "study_name": "Phase 3 Trials PALISADE Chylomicronemia and Pancreatitis Risk",
+    "study_length_weeks": 48,
+    "study_data_source" : "DOI: 10.1056/NEJMoa2409368",
+    "arms": [
+      {
+        "arm_name": "Placebo Q3M",
+        "dose": 0,
+        "data_location": "data/source/Plozasiran_KPD_model/Watts2025/Watts2025_Phase3.csv"
+      },{
+        "arm_name": "Plozasiran 25 mg Q3M",
+        "dose": 25,
+        "data_location": "data/source/Plozasiran_KPD_model/Watts2025/Watts2025_Phase3.csv"
+      },
+      {
+        "arm_name": "Plozasiran 50 mg Q3M",
+        "dose": 50,
+        "data_location": "data/source/Plozasiran_KPD_model/Watts2025/Watts2025_Phase3.csv"
+      }
+    ]
+  }
+  ]
+  }
+}

@@ -9,7 +9,7 @@
     "year": 2024,
     "model_type": "PK",
     "model_file_type": "mrgsolve",
-    "validation_status": "Not Validated",
+    "validation_status": "Under Development",
     "compound": "Nusinersen",
     "model_time_unit": "hours",
     "input": "CSF",

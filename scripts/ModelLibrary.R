@@ -218,6 +218,65 @@ ui1 <- fluidPage(
       .welcome-btn {
         margin-bottom: 15px;
       }
+      .status-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 11px;
+        font-weight: bold;
+        color: white;
+        margin-top: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .badge-fully-validated {
+        background-color: #007bff;
+      }
+      .badge-validated {
+        background-color: #28a745;
+      }
+      .badge-under-development {
+        background-color: #ffc107;
+        color: #333;
+      }
+      .badge-in-progress {
+        background-color: #ffc107;
+        color: #333;
+      }
+      .badge-planning {
+        background-color: #6c757d;
+      }
+      .badge-unknown {
+        background-color: #6c757d;
+      }
+      .badge-default {
+        background-color: #6c757d;
+      }
+      .library-header {
+        background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+        color: white;
+        padding: 30px 20px;
+        border-radius: 8px;
+        margin: 15px;
+        box-shadow: 0 2px 8px rgba(44,62,80,0.15);
+      }
+      .library-header h1 {
+        margin: 0 0 8px 0;
+        font-size: 2.5em;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .library-header-icon {
+        font-size: 2.5em;
+      }
+      .library-header p {
+        margin: 0;
+        font-size: 1.1em;
+        opacity: 0.95;
+        font-weight: 300;
+      }
     "))
   ),
   
@@ -225,6 +284,15 @@ ui1 <- fluidPage(
   conditionalPanel(
     condition = "output.show_library == true",
     #tags$img(src = "Modellibraryheader.png", class = "header-image"),
+    
+    # ========== Model Library Header ==========
+    div(class = "library-header",
+      h1(
+        span(class = "library-header-icon", "📚"),
+        "Model Library"
+      ),
+      p("Explore and compare pharmacokinetic-pharmacodynamic models for clinical trial simulation")
+    ),
     
     # ========== Compact Welcome Button ==========
     div(class = "welcome-btn", style = "margin: 10px; text-align: right;",
@@ -301,12 +369,18 @@ ui1 <- fluidPage(
             # ========== NEW: Add selection mode toggle ==========
             fluidRow(
               column(12,
-                  radioButtons("selection_mode", "Select for clinical trial simulation:", 
+                div(style = "display: flex; align-items: center; margin-bottom: 10px;",
+                  tags$label("Select for clinical trial simulation:", style = "margin-bottom: 0; margin-right: 10px; font-weight: bold;"),
+                  div(class = "info-icon", `data-tooltip` = "Single Model: Click a card to view details and run simulation separately. Multiple Models: Select checkboxes to compare models or run combined simulations.",
+                    tags$span("?", style = "font-size: 14px;")
+                  )
+                ),
+                radioButtons("selection_mode", NULL,
                    choices = c("Single Model" = "single", "Multiple Models" = "multi"),
                    selected = "single",
                    inline = TRUE)
-                    )
-                  ),
+              )
+            ),
             # ========== NEW: Show selected models panel (only in multi mode) ==========
             conditionalPanel(
               condition = "input.selection_mode == 'multi'",
@@ -468,25 +542,49 @@ server <- function(input, output, session) {
             id = paste0("card_", i),
             onclick = sprintf("Shiny.setInputValue('%s', Math.random())", paste0("card_click_", i)),
             h4(m_unique$display_name[i]),
-            p(m_unique$model_type[i]),
-            p(m_unique$therapeutic_area_original[i]),
-            p(m_unique$compound[i]),
-            style = "margin:0; height: 180px;"
+            p(style = "font-size: 0.85em; margin: 5px 0;", m_unique$model_type[i]),
+            p(style = "font-size: 0.85em; margin: 5px 0;", m_unique$compound[i]),
+            p(style = "font-size: 0.8em; color: #666; margin: 5px 0;", m_unique$therapeutic_area_original[i]),
+            {
+              status <- if (is.na(m_unique$validation_status[i]) || m_unique$validation_status[i] == "") {
+                "Unknown"
+              } else {
+                trimws(m_unique$validation_status[i])
+              }
+              badge_class <- paste("status-badge", paste0("badge-", tolower(gsub(" ", "-", status))))
+              div(class = badge_class, status)
+            },
+            style = "margin:0; min-height: 200px; display: flex; flex-direction: column; justify-content: space-between;"
           )
         } else {
           # ========== NEW: Multi-selection card with checkbox ==========
           div(
             class = "model-card",
-            style = "height: 200px;",
-            checkboxInput(
-              inputId = paste0("select_model_", i),
-              label = NULL,
-              value = FALSE
+            style = "min-height: 220px; display: flex; flex-direction: column; justify-content: space-between;",
+            div(
+              checkboxInput(
+                inputId = paste0("select_model_", i),
+                label = NULL,
+                value = FALSE
+              )
             ),
-            h5(m_unique$display_name[i]),
-            p(style = "font-size: 0.9em;", m_unique$model_type[i]),
-            p(style = "font-size: 0.85em;", m_unique$therapeutic_area_original[i]),
-            p(style = "font-size: 0.85em;", m_unique$compound[i])
+            div(
+              h5(style = "margin: 5px 0;", m_unique$display_name[i]),
+              p(style = "font-size: 0.85em; margin: 5px 0;", m_unique$model_type[i]),
+              p(style = "font-size: 0.8em; color: #666; margin: 5px 0;", m_unique$therapeutic_area_original[i]),
+              p(style = "font-size: 0.85em; margin: 5px 0;", m_unique$compound[i])
+            ),
+            div(
+              {
+                status <- if (is.na(m_unique$validation_status[i]) || m_unique$validation_status[i] == "") {
+                  "Unknown"
+                } else {
+                  trimws(m_unique$validation_status[i])
+                }
+                badge_class <- paste("status-badge", paste0("badge-", tolower(gsub(" ", "-", status))))
+                div(class = badge_class, status)
+              }
+            )
           )
         }
       )
@@ -583,9 +681,18 @@ server <- function(input, output, session) {
           tags$li(m_unique$display_name[idx])
         })
       ),
-      actionButton("simulate_multi", "Simulate Selected Models", 
-                   class = "btn btn-primary", 
-                   style = "width: 100%;")
+      fluidRow(
+        column(6,
+          actionButton("compare_models", "Compare Models", 
+                       class = "btn btn-info", 
+                       style = "width: 100%;")
+        ),
+        column(6,
+          actionButton("simulate_multi", "Simulate Selected Models", 
+                       class = "btn btn-primary", 
+                       style = "width: 100%;")
+        )
+      )
     )
   })
 
@@ -609,6 +716,72 @@ server <- function(input, output, session) {
     writeLines(sprintf('selected_model_filename <- "%s"', selected$filename), global_path)
     
     cts_app_active(TRUE)
+  })
+
+  # Compare Models button observer
+  observeEvent(input$compare_models, {
+    m <- filtered_meta()
+    m_unique <- get_unique_models(m)
+    
+    selected_indices <- which(sapply(seq_len(nrow(m_unique)), function(i) {
+      isTRUE(input[[paste0("select_model_", i)]])
+    }))
+    
+    if (length(selected_indices) < 2) {
+      showModal(modalDialog(
+        "Please select at least 2 models to compare",
+        easyClose = TRUE,
+        footer = modalButton("Close")
+      ))
+      return()
+    }
+    
+    # Build comparison data
+    selected_models <- m_unique[selected_indices, ]
+    
+    # Create comparison table
+    comparison_data <- data.frame(
+      Property = c("Type", "Compound", "Therapeutic Area", "Indication", 
+                   "Validation Status", "Author", "Last Updated"),
+      stringsAsFactors = FALSE
+    )
+    
+    # Add columns for each selected model
+    for (idx in selected_indices) {
+      comparison_data[[selected_models$display_name[match(idx, selected_indices)]]] <- c(
+        selected_models$model_type[match(idx, selected_indices)],
+        selected_models$compound[match(idx, selected_indices)],
+        selected_models$therapeutic_area_original[match(idx, selected_indices)],
+        selected_models$indication_original[match(idx, selected_indices)],
+        selected_models$validation_status[match(idx, selected_indices)],
+        selected_models$author[match(idx, selected_indices)],
+        selected_models$date_last_updated[match(idx, selected_indices)]
+      )
+    }
+    
+    # Build table with DT for fixed column widths
+    num_models <- length(selected_indices)
+    comparison_table <- DT::renderDataTable({
+      comparison_data
+    }, options = list(
+      columnDefs = list(
+        list(width = '150px', targets = 0),  # Property column
+        list(width = paste0(floor(800 / num_models), 'px'), targets = 1:num_models)  # Model columns
+      ),
+      dom = 't',  # Hide search, pagination, info
+      searching = FALSE,
+      paging = FALSE,
+      bInfo = FALSE,
+      ordering = FALSE
+    ), rownames = FALSE)
+    
+    showModal(modalDialog(
+      title = paste("Comparing", length(selected_indices), "Models"),
+      comparison_table,
+      easyClose = TRUE,
+      size = "l",
+      footer = modalButton("Close")
+    ))
   })
 
   # Add this in your server function

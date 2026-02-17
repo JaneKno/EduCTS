@@ -9,7 +9,7 @@
     "year": 2022,
     "model_type": "PKPD",
     "model_file_type": "mrgsolve",
-    "validation_status": "Not Validated",
+    "validation_status": "Under Development",
     "compound": "Eplontersen (ARO-TTR02)",
     "model_time_unit": "hours",
     "input": "GUT",

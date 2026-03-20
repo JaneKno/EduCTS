@@ -1,27 +1,58 @@
 {
-  "model_information" :{"filename": "ASO_PK_model.cpp",
-  "display_name": "ASO PK Model",
-  "description": "Pharmacokinetic model for antisense oligonucleotide.",
-  "author": "Jane Knochel",
-  "date_created": "2025-05-06",
-  "date_last_updated": "2025-08-27",
-  "year": 2024,
-  "model_type": "PK",
-  "model_file_type": "mrgsolve",
-  "validation_status": "Validated",
-  "compound": "AZD8233",
-  "model_time_unit": "hours",
-  "input": "ABS",
-  "input_label":"subcutaneous injection",
-  "dose_unit": "mg",
-  "model_dose_unit": "N/A",
-  "therapeutic_dose": "N/A",
-  "therapeutic_frequency": "N/A",
-  "output": "DV",
-  "output_label": "AZD8233 Plasma Concentration [ng/mL]",
-  "source": "doi.org/10.1111/bcp.16046",
-  "therapeutic_area": "Cardiovascular",
-  "indication": "Hypercholesterolemia",
-  "applications": "Dose-selection, clinical trial simulation, Subpopulation analysis"
-}
+    "model_information":  {
+                              "filename":  "ASO_PK_model.cpp",
+                              "display_name":  "ASO PK Model",
+                              "description":  "Pharmacokinetic model for antisense oligonucleotide.",
+                              "compound_mode":  "single",
+                              "compound_interaction_description":  "None",
+                              "author":  "Jane Knochel",
+                              "date_created":  "2025-05-06",
+                              "date_last_updated":  "2025-08-27",
+                              "year":  2024,
+                              "model_type":  "PK",
+                              "model_file_type":  "mrgsolve",
+                              "validation_status":  "Validated",
+                              "compound":  "AZD8233",
+                              "model_time_unit":  "hours",
+                              "input":  "ABS",
+                              "input_label":  "subcutaneous injection",
+                              "dose_unit":  "mg",
+                              "model_dose_unit":  "N/A",
+                              "output":  "DV",
+                              "output_label":  "AZD8233 Plasma Concentration [ng/mL]",
+                              "source":  "doi.org/10.1111/bcp.16046",
+                              "therapeutic_area":  "Cardiovascular",
+                              "indication":  "Hypercholesterolemia",
+                              "applications":  "Dose-selection, clinical trial simulation, Subpopulation analysis",
+                              "modality_type":  "RNAi Therapeutic",
+                              "modality":  "ASO"
+                          },
+    "compounds":  [
+                      {
+                          "compound_id":  1,
+                          "compound_name":  "AZD8233",
+                          "abbreviation":  "AZD",
+                          "is_required":  true,
+                          "role_in_model":  "Cardiovascular antisense oligonucleotide (PCSK9 inhibitor)",
+                          "interaction_with":  [
+
+                                               ],
+                          "therapeutic_dose":  "N/A",
+                          "therapeutic_frequency":  "N/A",
+                          "route_of_administration":  "Subcutaneous",
+                          "pharmacokinetics":  {
+
+                                               }
+                      }
+                  ],
+    "internal_validation_data":  {
+                                     "studies":  [
+
+                                                 ]
+                                 },
+    "external_validation_data":  {
+                                     "studies":  [
+
+                                                 ]
+                                 }
 }

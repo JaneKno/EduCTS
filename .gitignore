@@ -1,0 +1,16 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Exclude validation simulation results (store elsewhere)
+data/derived/validation/
+data/validation/
+
+# Exclude PDFs and documentation files (not needed for deployment)
+*.pdf
+*.docx
+
+# Local development
+.DS_Store
+Thumbs.db

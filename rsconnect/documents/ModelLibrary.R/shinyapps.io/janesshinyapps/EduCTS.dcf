@@ -1,0 +1,12 @@
+name: EduCTS
+title: EduCTS
+username: janesshinyapps
+account: janesshinyapps
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 16701982
+bundleId: 11738127
+url: https://janesshinyapps.shinyapps.io/EduCTS/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

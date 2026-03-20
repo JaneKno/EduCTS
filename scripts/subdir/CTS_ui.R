@@ -278,5 +278,9 @@ ui <- fluidPage(
       ),
       width = 8
     )
+  ),
+  tags$hr(),
+  div(style = "text-align: center; color: #999; font-size: 0.85em; padding: 15px; margin-top: 20px;",
+    HTML("Creator: Jane Knöchel | Last Updated: 2026-02-17")
   )
 )

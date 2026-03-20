@@ -1,28 +1,58 @@
 {
-  "model_information": {
-    "filename": "nusinersen_mechanistic_PK.cpp",
-    "display_name": "Nusinersen Mechanistic PK Model for Non-Human Primates",
-    "description": "Mechanistic population PK model for nusinersen with CNS distribution in non-human primates. Nine-compartment model including cerebrospinal fluid (CSF), plasma, spinal cord regions (cervical, lumbar, thoracic), brain, deep brain tissue, pons, and peripheral compartment. Model captures drug distribution across blood-brain barrier and into CNS tissues.",
-    "author": "UF",
-    "date_created": "2026-02-06",
-    "date_last_updated": "2026-02-06",
-    "year": 2024,
-    "model_type": "PK",
-    "model_file_type": "mrgsolve",
-    "validation_status": "Under Development",
-    "compound": "Nusinersen",
-    "model_time_unit": "hours",
-    "input": "CSF",
-    "input_label": "Nusinersen intrathecal injection",
-    "dose_unit": "ug",
-    "model_dose_unit": "ug",
-    "therapeutic_dose": "12",
-    "therapeutic_frequency": "Once every 4 months",
-    "output": "CONC_CSF, CONC_PLASMA, CONC_CERV, CONC_BRAIN, CONC_LUM, CONC_THO, CONC_PONS",
-    "output_label": "Cerebrospinal fluid (ug/mL), Plasma concentration (ug/mL), Cervical spinal cord (ug/g), Brain (ug/g), Lumbar spinal cord (ug/g), Thoracic spinal cord (ug/g), Pons (ug/g)",
-    "source": "Nonhuman primate population PK study",
-    "therapeutic_area": "Neurodegenerative Disease",
-    "indication": "Spinal Muscular Atrophy (SMA)",
-    "applications": "CNS drug distribution prediction, dose optimization, intrathecal administration strategy evaluation, population PK analysis"
-  }
+    "model_information":  {
+                              "filename":  "nusinersen_mechanistic_PK.cpp",
+                              "display_name":  "Nusinersen Mechanistic PK Model for Non-Human Primates",
+                              "description":  "Mechanistic population PK model for nusinersen with CNS distribution in non-human primates. Nine-compartment model including cerebrospinal fluid (CSF), plasma, spinal cord regions (cervical, lumbar, thoracic), brain, deep brain tissue, pons, and peripheral compartment. Model captures drug distribution across blood-brain barrier and into CNS tissues.",
+                              "compound_mode":  "single",
+                              "compound_interaction_description":  "None",
+                              "author":  "UF",
+                              "date_created":  "2026-02-06",
+                              "date_last_updated":  "2026-02-06",
+                              "year":  2024,
+                              "model_type":  "PK",
+                              "model_file_type":  "mrgsolve",
+                              "validation_status":  "Not Validated",
+                              "compound":  "Nusinersen",
+                              "model_time_unit":  "hours",
+                              "input":  "CSF",
+                              "input_label":  "Nusinersen intrathecal injection",
+                              "dose_unit":  "ug",
+                              "model_dose_unit":  "ug",
+                              "output":  "CONC_CSF, CONC_PLASMA, CONC_CERV, CONC_BRAIN, CONC_LUM, CONC_THO, CONC_PONS",
+                              "output_label":  "Cerebrospinal fluid (ug/mL), Plasma concentration (ug/mL), Cervical spinal cord (ug/g), Brain (ug/g), Lumbar spinal cord (ug/g), Thoracic spinal cord (ug/g), Pons (ug/g)",
+                              "source":  "Nonhuman primate population PK study",
+                              "therapeutic_area":  "Neurodegenerative Disease",
+                              "indication":  "Spinal Muscular Atrophy (SMA)",
+                              "applications":  "CNS drug distribution prediction, dose optimization, intrathecal administration strategy evaluation, population PK analysis",
+                              "modality_type":  "RNAi Therapeutic",
+                              "modality":  "ASO"
+                          },
+    "compounds":  [
+                      {
+                          "compound_id":  1,
+                          "compound_name":  "Nusinersen",
+                          "abbreviation":  "NUS",
+                          "is_required":  true,
+                          "role_in_model":  "Antisense oligonucleotide for spinal muscular atrophy",
+                          "interaction_with":  [
+
+                                               ],
+                          "therapeutic_dose":  "12",
+                          "therapeutic_frequency":  "Once every 4 months",
+                          "route_of_administration":  "Intrathecal",
+                          "pharmacokinetics":  {
+
+                                               }
+                      }
+                  ],
+    "internal_validation_data":  {
+                                     "studies":  [
+
+                                                 ]
+                                 },
+    "external_validation_data":  {
+                                     "studies":  [
+
+                                                 ]
+                                 }
 }

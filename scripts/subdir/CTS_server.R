@@ -8,7 +8,7 @@ library(plotly)
 library(readr)
 library(digest)
 
-models_dir <- "../models/" # Adjust path as needed
+models_dir <- "models/" # Adjust path as needed
 
 # Modify the main function
 generate_input_dataset <- function(treatment_groups, study_length_weeks, design = "parallel", washout_weeks = 4, model_time_unit, input_compartment = "DEPOT", dose_unit = "mg", model_dose_unit = "mg") {
@@ -421,7 +421,7 @@ transform_simulation_data <- function(summaries, output_var, transformation_type
 
 server <- function(input, output, session) {
   # Load global.R to get selected model(s)
-  source("subdir/global.R", local = TRUE)
+  source("scripts/subdir/global.R", local = TRUE)
   
   # Determine if single or multiple models are selected
   is_multi_model <- exists("selected_model_filenames")
@@ -1673,7 +1673,7 @@ output$sim_result <- renderUI({
           model_idx_in_path <- which(parts == model_name)
           if (length(model_idx_in_path) > 0 && model_idx_in_path + 1 <= length(parts)) {
             study_folder_name <- parts[model_idx_in_path + 1]
-            study_cache_dir <- file.path("../data/derived/", "validation", model_name, study_folder_name)
+            study_cache_dir <- file.path("data/derived/", "validation", model_name, study_folder_name)
             # Create the directory immediately so arm summaries can be saved
             dir.create(study_cache_dir, recursive = TRUE, showWarnings = FALSE)
           }
@@ -1766,7 +1766,7 @@ output$sim_result <- renderUI({
         no_doses_from_data <- NULL  # To store number of doses from data file
         
         if (!is.null(data_location) && data_location != "") {
-          data_path <- file.path("../", data_location)
+          data_path <- file.path(data_location)
           cat("DEBUG: Looking for data at:", data_path, "\n")
           if (file.exists(data_path)) {
             tryCatch({
@@ -2262,7 +2262,7 @@ output$sim_result <- renderUI({
           
           if (!is.null(data_location) && data_location != "") {
             cat("DEBUG PLOT: Looking for data at data_location:", data_location, "\n")
-            data_path <- file.path("../", data_location)
+            data_path <- file.path( data_location)
             cat("DEBUG PLOT: Full path:", data_path, "\n")
             cat("DEBUG PLOT: File exists:", file.exists(data_path), "\n")
             if (file.exists(data_path)) {

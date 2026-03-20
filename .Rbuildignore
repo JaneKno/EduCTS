@@ -1,0 +1,9 @@
+^data/derived/validation/.*
+^.*\.pdf$
+^.*\.docx$
+^\.git.*
+^\.gitignore
+^\.Rproj\.user
+^\.RData
+^\.Rhistory
+^.*\.Rproj$

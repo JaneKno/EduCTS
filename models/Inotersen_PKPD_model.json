@@ -1,0 +1,101 @@
+{
+    "model_information":  {
+                              "filename":  "Inotersen_PKPD_model.cpp",
+                              "display_name":  "Inotersen Population PKPD Model",
+                              "description":  "Population PKPD model for Inotersen (ISIS 420915), an antisense oligonucleotide (ASO) targeting transthyretin. Features 2-compartment PK with subcutaneous absorption and TTR biomarker indirect response model with Emax inhibition of TTR synthesis.",
+                              "compound_mode":  "single",
+                              "compound_interaction_description":  "None",
+                              "author":  "Jane Knochel",
+                              "date_created":  "2026-03-03",
+                              "date_last_updated":  "2026-03-03",
+                              "year":  2019,
+                              "model_type":  "PKPD",
+                              "model_file_type":  "mrgsolve",
+                              "validation_status":  "Fully validated",
+                              "compound":  "Inotersen",
+                              "model_time_unit":  "hours",
+                              "input":  "GUT",
+                              "input_label":  "Absorption from subcutaneous injection site",
+                              "dose_unit":  "mg",
+                              "model_dose_unit":  "ug",
+                              "output":  "DV_Cp, TTR, TTR_pct_change",
+                              "output_label":  "Plasma concentration (ng/mL), Transthyretin (mg/dL), % Change TTR",
+                              "source":  "Phase 3 Clinical Trial data",
+                              "therapeutic_area":  "Neurology",
+                              "indication":  "Transthyretin (TTR) Amyloidosis",
+                              "applications":  "Dose-selection, Treatment switching, clinical trial simulation, PKPD modeling, TTR lowering prediction, patient stratification",
+                              "modality_type":  "RNAi Therapeutic",
+                              "modality":  "ASO"
+                          },
+    "compounds":  [
+                      {
+                          "compound_id":  1,
+                          "compound_name":  "Inotersen",
+                          "abbreviation":  "ISIS 420915",
+                          "is_required":  true,
+                          "role_in_model":  "Antisense oligonucleotide targeting transthyretin for amyloidosis",
+                          "interaction_with":  [
+
+                                               ],
+                          "therapeutic_dose":  "300",
+                          "therapeutic_frequency":  "Weekly",
+                          "route_of_administration":  "Subcutaneous",
+                          "pharmacokinetics":  {
+
+                                               }
+                      }
+                  ],
+    "internal_validation_data":  {
+                                     "studies":  [
+                                                     {
+                                                         "study_id":  "STUDY_001",
+                                                         "study_name":  "Phase 3 Trial",
+                                                         "study_length_days":  440,
+                                                         "study_data_source":  "10.1089/nat.2019.0822",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "300 mg QW",
+                                                                          "dose":  300,
+                                                                          "frequency":  "Weekly",
+                                                                          "n_subjects":  1,
+                                                                          "data_location":  "data/source/Inotersen_PKPD_model/Yu2020/Yu2020.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "150 mg QW",
+                                                                          "dose":  150,
+                                                                          "frequency":  "Weekly",
+                                                                          "n_subjects":  1,
+                                                                          "data_location":  "data/source/Inotersen_PKPD_model/Yu2020/Yu2020.csv"
+                                                                      }
+                                                                  ]
+                                                     },
+                                                     {
+                                                         "study_id":  "STUDY_002",
+                                                         "study_name":  "Phase 3 Trial",
+                                                         "study_length_days":  455,
+                                                         "study_data_source":  "10.1056/NEJMoa1716793",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "Placebo QW",
+                                                                          "dose":  0,
+                                                                          "frequency":  "Weekly",
+                                                                          "n_subjects":  60,
+                                                                          "data_location":  "data/source/Inotersen_PKPD_model/Benson2018/Benson2018_Phase3.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "300 mg QW",
+                                                                          "dose":  300,
+                                                                          "frequency":  "Weekly",
+                                                                          "n_subjects":  112,
+                                                                          "data_location":  "data/source/Inotersen_PKPD_model/Benson2018/Benson2018_Phase3.csv"
+                                                                      }
+                                                                  ]
+                                                     }
+                                                 ]
+                                 },
+    "external_validation_data":  {
+                                     "studies":  [
+
+                                                 ]
+                                 }
+}

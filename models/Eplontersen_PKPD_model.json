@@ -1,28 +1,96 @@
 {
-  "model_information": {
-    "filename": "Eplontersen_PKPD_model.cpp",
-    "display_name": "Eplontersen Population PKPD Model",
-    "description": "Population PKPD model for Eplontersen (ARO-TTR02), an antisense oligonucleotide (ASO) targeting transthyretin. Features 2-compartment PK with subcutaneous absorption and TTR biomarker indirect response model with Emax inhibition of TTR synthesis.",
-    "author": "Jane Knochel",
-    "date_created": "2026-02-16",
-    "date_last_updated": "2026-02-16",
-    "year": 2022,
-    "model_type": "PKPD",
-    "model_file_type": "mrgsolve",
-    "validation_status": "Under Development",
-    "compound": "Eplontersen (ARO-TTR02)",
-    "model_time_unit": "hours",
-    "input": "GUT",
-    "input_label": "Absorption from subcutaneous injection site",
-    "dose_unit": "mg",
-    "model_dose_unit": "ug",
-    "therapeutic_dose": "45",
-    "therapeutic_frequency": "Every 4 weeks",
-    "output": "DV_Cp, TTR, TTR_pct_change",
-    "output_label": "Plasma concentration (ng/mL), Transthyretin (mg/dL), % Change TTR",
-    "source": "doi.org/10.1111/bcp.15468",
-    "therapeutic_area": "Neurology",
-    "indication": "Transthyretin (TTR) Amyloidosis",
-    "applications": "Dose-selection, clinical trial simulation, PKPD modeling, TTR lowering prediction, patient stratification"
-  }
+    "model_information":  {
+                              "filename":  "Eplontersen_PKPD_model.cpp",
+                              "display_name":  "Eplontersen Population PKPD Model",
+                              "description":  "Population PKPD model for Eplontersen (ARO-TTR02), an antisense oligonucleotide (ASO) targeting transthyretin. Features 2-compartment PK with subcutaneous absorption and TTR biomarker indirect response model with Emax inhibition of TTR synthesis.",
+                              "compound_mode":  "single",
+                              "compound_interaction_description":  "None",
+                              "author":  "Jane Knochel",
+                              "date_created":  "2026-02-16",
+                              "date_last_updated":  "2026-02-16",
+                              "year":  2022,
+                              "model_type":  "PKPD",
+                              "model_file_type":  "mrgsolve",
+                              "validation_status":  "Fully Validated",
+                              "compound":  "Eplontersen (ARO-TTR02)",
+                              "model_time_unit":  "hours",
+                              "input":  "GUT",
+                              "input_label":  "Absorption from subcutaneous injection site",
+                              "dose_unit":  "mg",
+                              "model_dose_unit":  "ug",
+                              "output":  "DV_Cp, TTR, TTR_pct_change",
+                              "output_label":  "Plasma concentration (ng/mL), Transthyretin (mg/dL), % Change TTR",
+                              "source":  "doi.org/10.1111/bcp.15468",
+                              "therapeutic_area":  "Neurology",
+                              "indication":  "Transthyretin (TTR) Amyloidosis",
+                              "applications":  "Dose-selection, Treatment switching, clinical trial simulation, PKPD modeling, TTR lowering prediction, patient stratification",
+                              "modality_type":  "Biologic",
+                              "modality":  "Monoclonal Antibody"
+                          },
+    "compounds":  [
+                      {
+                          "compound_id":  1,
+                          "compound_name":  "Eplontersen",
+                          "abbreviation":  "ARO-TTR02",
+                          "therapeutic_dose":  "45",
+                          "therapeutic_frequency":  "Every 4 weeks",
+                          "route_of_administration":  "Subcutaneous",
+                          "pharmacokinetics":  {
+
+                                               }
+                      }
+                  ],
+    "internal_validation_data":  {
+                                     "studies":  [
+                                                     {
+                                                         "study_id":  "STUDY_001",
+                                                         "study_name":  "Phase 3 Trial",
+                                                         "study_length_days":  440,
+                                                         "study_data_source":  "10.1089/nat.2019.0822",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "Placebo SD",
+                                                                          "dose":  0,
+                                                                          "frequency":  "single_dose",
+                                                                          "data_location":  "data/source/Eplontersen_PKPD_model/Viney2021/Viney2021.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "120 mg SD",
+                                                                          "dose":  120,
+                                                                          "frequency":  "single_dose",
+                                                                          "data_location":  "data/source/Eplontersen_PKPD_model/Viney2021/Viney2021.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Placebo Q4W",
+                                                                          "dose":  0,
+                                                                          "frequency":  "Every 4 weeks",
+                                                                          "data_location":  "data/source/Eplontersen_PKPD_model/Viney2021/Viney2021.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "45 mg Q4W",
+                                                                          "dose":  45,
+                                                                          "frequency":  "Every 4 weeks",
+                                                                          "data_location":  "data/source/Eplontersen_PKPD_model/Viney2021/Viney2021.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "60 mg Q4W",
+                                                                          "dose":  60,
+                                                                          "frequency":  "Every 4 weeks",
+                                                                          "data_location":  "data/source/Eplontersen_PKPD_model/Viney2021/Viney2021.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "90 mg Q4W",
+                                                                          "dose":  90,
+                                                                          "frequency":  "Every 4 weeks",
+                                                                          "data_location":  "data/source/Eplontersen_PKPD_model/Viney2021/Viney2021.csv"
+                                                                      }
+                                                                  ]
+                                                     }
+                                                 ]
+                                 },
+    "external_validation_data":  {
+                                     "studies":  [
+
+                                                 ]
+                                 }
 }

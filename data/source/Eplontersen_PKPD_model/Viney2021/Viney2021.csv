@@ -1,0 +1,75 @@
+﻿Study;Drug;Time;DV ;DV_CHR;Time_unit;DV_unit;DV_type;Dose_mg;Frequency;no_doses;n_subjects
+Viney2021;Eplontersen;0;0;TTR;days;Change from baseline in percent;OBS;0;single_dose;1;2
+Viney2021;Eplontersen;1;-8.149279657;TTR;days;Change from baseline in percent;OBS;0;single_dose;1;2
+Viney2021;Eplontersen;3;0.559038293;TTR;days;Change from baseline in percent;OBS;0;single_dose;1;2
+Viney2021;Eplontersen;7;16.73237211;TTR;days;Change from baseline in percent;OBS;0;single_dose;1;2
+Viney2021;Eplontersen;14;23.24547526;TTR;days;Change from baseline in percent;OBS;0;single_dose;1;2
+Viney2021;Eplontersen;28;32.53657193;TTR;days;Change from baseline in percent;OBS;0;single_dose;1;2
+Viney2021;Eplontersen;49;41.80287602;TTR;days;Change from baseline in percent;OBS;0;single_dose;1;2
+Viney2021;Eplontersen;71;24.60998552;TTR;days;Change from baseline in percent;OBS;0;single_dose;1;2
+Viney2021;Eplontersen;92;10.21896288;TTR;days;Change from baseline in percent;OBS;0;single_dose;1;2
+Viney2021;Eplontersen;0;-0.675081351;TTR;days;Change from baseline in percent;OBS;120;single_dose;1;9
+Viney2021;Eplontersen;1;-2.234565374;TTR;days;Change from baseline in percent;OBS;120;single_dose;1;9
+Viney2021;Eplontersen;3;-22.47663739;TTR;days;Change from baseline in percent;OBS;120;single_dose;1;9
+Viney2021;Eplontersen;7;-61.40037916;TTR;days;Change from baseline in percent;OBS;120;single_dose;1;9
+Viney2021;Eplontersen;14;-81.34585843;TTR;days;Change from baseline in percent;OBS;120;single_dose;1;9
+Viney2021;Eplontersen;28;-86.68605819;TTR;days;Change from baseline in percent;OBS;120;single_dose;1;9
+Viney2021;Eplontersen;50;-84.26740407;TTR;days;Change from baseline in percent;OBS;120;single_dose;1;9
+Viney2021;Eplontersen;71;-78.7362096;TTR;days;Change from baseline in percent;OBS;120;single_dose;1;9
+Viney2021;Eplontersen;92;-68.84672407;TTR;days;Change from baseline in percent;OBS;120;single_dose;1;9
+Viney2021;Eplontersen;0;0;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;7;-17.36585366;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;14;-17.02439024;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;28;-2;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;42;5.512195122;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;56;3.463414634;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;70;6.195121951;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;84;-9.853658537;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;91;-1.658536585;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;98;-6.097560976;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;112;3.804878049;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;126;7.219512195;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;140;26;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;176;12;TTR;days;Change from baseline in percent;OBS;0;Every 4 weeks;4;6
+Viney2021;Eplontersen;0;0.048780488;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;7;-39.2195122;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;14;-57.65853659;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;28;-54.24390244;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;42;-74.3902439;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;56;-78.48780488;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;70;-81.56097561;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;84;-82.58536585;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;91;-83.26829268;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;99;-86.68292683;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;113;-78.14634146;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;127;-75.75609756;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;140;-71.65853659;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;176;-52.53658537;TTR;days;Change from baseline in percent;OBS;45;Every 4 weeks;4;10
+Viney2021;Eplontersen;0;0.048780488;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;7;-47.41463415;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;14;-68.24390244;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;28;-78.48780488;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;42;-86;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;56;-84.29268293;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;70;-87.36585366;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;84;-88.73170732;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;91;-89.75609756;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;99;-90.7804878;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;113;-90.7804878;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;127;-90.09756098;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;141;-84.29268293;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;176;-74.73170732;TTR;days;Change from baseline in percent;OBS;60;Every 4 weeks;4;10
+Viney2021;Eplontersen;0;0.390243902;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;7;-59.02439024;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;14;-73.36585366;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;28;-81.90243902;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;43;-88.73170732;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;57;-87.70731707;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;70;-90.7804878;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;84;-91.80487805;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;91;-93.51219512;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;98;-93.85365854;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;112;-92.82926829;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;126;-92.82926829;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;140;-89.41463415;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10
+Viney2021;Eplontersen;176;-81.90243902;TTR;days;Change from baseline in percent;OBS;90;Every 4 weeks;4;10

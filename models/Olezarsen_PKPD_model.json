@@ -1,116 +1,141 @@
 {
-  "model_information" :{"filename": "Olezarsen_PKPD_model.cpp",
-  "display_name": "Olezarsen PopPK-PD Model",
-  "description": "Population PK-PD model for olezarsen with ApoC-III lowering via inhibition of ApoC-III production. Three-compartment PK model with indirect response PD model.",
-  "author": "Jane Knochel",
-  "date_created": "2025-11-28",
-  "date_last_updated": "2025-11-28",
-  "year": 2024,
-  "model_type": "PKPD",
-  "model_file_type": "mrgsolve",
-  "validation_status": "Fully Validated",
-  "compound": "Olezarsen",
-  "model_time_unit": "hours",
-  "input": "DEPOT",
-  "input_label": "Olezarsen",
-  "dose_unit": "mg",
-  "model_dose_unit": "mg",
-  "therapeutic_dose": "80",
-  "therapeutic_frequency": "Monthly",
-  "output": "DV_OLEZ, DV_APOC3, Cc_out, APOC3, APOC3_pct_change",
-  "output_label": "Predicted Olezarsen (ng/mL), Predicted APOC3 (mg/dL), Central Concentration (ng/mL), ApoC-III (mg/dL), % Change APOC3",
-  "source": "https://www.accessdata.fda.gov/drugsatfda_docs/nda/2025/218614Orig1s000IntegratedR.pdf",
-  "therapeutic_area": "Metabolic Disorders",
-  "indication": "Familial Chylomicronemia Syndrome (FCS), Hypertriglyceridemia (HTG), Cardiovascular Disease (CVD)",
-  "applications": "Dose-selection, clinical trial simulation, population PK-PD analysis, ADA impact assessment"
-},
-  "internal_validation_data":{
-    "studies" : [
-    {
-      "study_id": "STUDY_001",
-      "study_name": "Phase 1 Trial",
-      "study_length_days": 155,
-      "study_data_source": "doi: 10.1093/eurheartj/ehz321",
-      "arms": [
-        {
-          "arm_name": "Olezarsen Placebo SD",
-          "frequency": "single_dose",
-          "dose": 0,
-          "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
-        },{
-          "arm_name": "Olezarsen 10 mg SD",
-          "frequency": "single_dose",
-          "dose": 10,
-          "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
-        },{
-          "arm_name": "Olezarsen 30 mg SD",
-          "frequency": "single_dose",
-          "dose": 30,
-          "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
-        },
-        {
-          "arm_name": "Olezarsen 60 mg SD",
-          "frequency": "single_dose",
-          "dose": 60,
-          "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
-        },
-        {
-          "arm_name": "Olezarsen 90 mg SD",
-          "frequency": "single_dose",
-          "dose": 90,
-          "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
-        },
-        {
-          "arm_name": "Olezarsen 120 mg SD",
-          "frequency": "single_dose",
-          "dose": 120,
-          "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
-        },
-         {
-          "arm_name": "Olezarsen Placebo Weekly",
-          "frequency": "Weekly",
-          "dose": 0,
-          "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
-        },
-        {
-          "arm_name": "Olezarsen 15 mg Weekly",
-          "frequency": "Weekly",
-          "dose": 15,
-          "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
-        },
-        {
-          "arm_name": "Olezarsen 30 mg Weekly",
-          "frequency": "Weekly",
-          "dose": 30,
-          "data_location": "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
-        }
-      ]
-  }
-  ]},
-  "external_validation_data":{
-    "studies" :[
-    {
-    "study_id": "STUDY_002",
-    "study_name": "Phase 3 Trial - BALANCE",
-    "study_length_weeks": 53,
-    "study_data_source": " doi: 10.1056/NEJMoa2400201",
-    "arms": [
-      {
-        "arm_name": "Placebo Q4W",
-        "dose": 0,
-        "data_location": "data/source/Olezarsen_PKPD_model/Stroes2024/Stroes2024_Phase3.csv"
-      },
-      {
-        "arm_name": "Olezarsen 50 mg Q4W",
-        "dose": 50,
-        "data_location": "data/source/Olezarsen_PKPD_model/Stroes2024/Stroes2024_Phase3.csv"
-      },{
-        "arm_name": "Olezarsen 80 mg Q4W",
-        "dose": 80,
-        "data_location": "data/source/Olezarsen_PKPD_model/Stroes2024/Stroes2024_Phase3.csv"
-      }
-    ]
-  }
-  ]
-  }
+    "model_information":  {
+                              "filename":  "Olezarsen_PKPD_model.cpp",
+                              "display_name":  "Olezarsen PopPK-PD Model",
+                              "description":  "Population PK-PD model for olezarsen with ApoC-III lowering via inhibition of ApoC-III production. Three-compartment PK model with indirect response PD model.",
+                              "compound_mode":  "single",
+                              "compound_interaction_description":  "None",
+                              "author":  "Jane Knochel",
+                              "date_created":  "2025-11-28",
+                              "date_last_updated":  "2025-11-28",
+                              "year":  2024,
+                              "model_type":  "PKPD",
+                              "model_file_type":  "mrgsolve",
+                              "validation_status":  "Fully Validated",
+                              "compound":  "Olezarsen",
+                              "model_time_unit":  "hours",
+                              "input":  "DEPOT",
+                              "input_label":  "Olezarsen",
+                              "dose_unit":  "mg",
+                              "model_dose_unit":  "mg",
+                              "output":  "DV_OLEZ, DV_APOC3, Cc_out, APOC3, APOC3_pct_change",
+                              "output_label":  "Predicted Olezarsen (ng/mL), Predicted APOC3 (mg/dL), Central Concentration (ng/mL), ApoC-III (mg/dL), % Change APOC3",
+                              "source":  "https://www.accessdata.fda.gov/drugsatfda_docs/nda/2025/218614Orig1s000IntegratedR.pdf",
+                              "therapeutic_area":  "Metabolic Disorders",
+                              "indication":  "Familial Chylomicronemia Syndrome (FCS), Hypertriglyceridemia (HTG), Cardiovascular Disease (CVD)",
+                              "applications":  "Dose-selection, clinical trial simulation, population PK-PD analysis, ADA impact assessment",
+                              "modality_type":  "RNAi Therapeutic",
+                              "modality":  "ASO"
+                          },
+    "compounds":  [
+                      {
+                          "compound_id":  1,
+                          "compound_name":  "Olezarsen",
+                          "abbreviation":  "OLEZ",
+                          "is_required":  true,
+                          "role_in_model":  "Antisense oligonucleotide targeting ApoC-III for hypertriglyceridemia",
+                          "interaction_with":  [
+
+                                               ],
+                          "therapeutic_dose":  "80",
+                          "therapeutic_frequency":  "Monthly",
+                          "route_of_administration":  "",
+                          "pharmacokinetics":  {
+
+                                               }
+                      }
+                  ],
+    "internal_validation_data":  {
+                                     "studies":  [
+                                                     {
+                                                         "study_id":  "STUDY_001",
+                                                         "study_name":  "Phase 1 Trial",
+                                                         "study_length_days":  155,
+                                                         "study_data_source":  "doi: 10.1093/eurheartj/ehz321",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "Olezarsen Placebo SD",
+                                                                          "frequency":  "single_dose",
+                                                                          "dose":  0,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Olezarsen 10 mg SD",
+                                                                          "frequency":  "single_dose",
+                                                                          "dose":  10,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Olezarsen 30 mg SD",
+                                                                          "frequency":  "single_dose",
+                                                                          "dose":  30,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Olezarsen 60 mg SD",
+                                                                          "frequency":  "single_dose",
+                                                                          "dose":  60,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Olezarsen 90 mg SD",
+                                                                          "frequency":  "single_dose",
+                                                                          "dose":  90,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Olezarsen 120 mg SD",
+                                                                          "frequency":  "single_dose",
+                                                                          "dose":  120,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Olezarsen Placebo Weekly",
+                                                                          "frequency":  "Weekly",
+                                                                          "dose":  0,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Olezarsen 15 mg Weekly",
+                                                                          "frequency":  "Weekly",
+                                                                          "dose":  15,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Olezarsen 30 mg Weekly",
+                                                                          "frequency":  "Weekly",
+                                                                          "dose":  30,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Alexander2019/Alexander2019_Phase1.csv"
+                                                                      }
+                                                                  ]
+                                                     }
+                                                 ]
+                                 },
+    "external_validation_data":  {
+                                     "studies":  [
+                                                     {
+                                                         "study_id":  "STUDY_002",
+                                                         "study_name":  "Phase 3 Trial - BALANCE",
+                                                         "study_length_weeks":  53,
+                                                         "study_data_source":  " doi: 10.1056/NEJMoa2400201",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "Placebo Q4W",
+                                                                          "dose":  0,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Stroes2024/Stroes2024_Phase3.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Olezarsen 50 mg Q4W",
+                                                                          "dose":  50,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Stroes2024/Stroes2024_Phase3.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Olezarsen 80 mg Q4W",
+                                                                          "dose":  80,
+                                                                          "data_location":  "data/source/Olezarsen_PKPD_model/Stroes2024/Stroes2024_Phase3.csv"
+                                                                      }
+                                                                  ]
+                                                     }
+                                                 ]
+                                 }
 }

@@ -1,27 +1,58 @@
 {
-  "model_information" :{"filename": "Inclisiran_KPD_model.cpp",
-  "display_name": "Inclisiran K-PD Model",
-  "description": "Population K-PD model for inclisiran with PCSK9 and LDL-C indirect response mechanisms.",
-  "author": "Jane Knochel",
-  "date_created": "2025-11-14",
-  "date_last_updated": "2025-11-14",
-  "year": 2023,
-  "model_type": "PKPD",
-  "model_file_type": "mrgsolve",
-  "validation_status": "Under Development",
-  "compound": "Inclisiran",
-  "model_time_unit": "days",
-  "input": "EFFECT",
-  "input_label": "Effect compartment",
-  "dose_unit": "mg",
-  "model_dose_unit": "mg",
-  "therapeutic_dose": "NA",
-  "therapeutic_frequency": "NA",
-  "output": "Ce_conc, DV_PCSK9, DV_LDL, PCSK9, LDL",
-  "output_label": "Inclisiran concentration (mg), Predicted PCSK9 (ng/mL), Predicted LDL-C (mg/dL), PCSK9 (ng/mL), LDL-C (mg/dL)",
-  "source": "https://www.accessdata.fda.gov/drugsatfda_docs/nda/2022/214012Orig1s000ClinPharmR.pdf",
-  "therapeutic_area": "Cardiovascular",
-  "indication": "Hypercholesterolemia, Atherosclerotic cardiovascular disease",
-  "applications": "Dose-selection, clinical trial simulation, population PK-PD analysis"
-}
+    "model_information":  {
+                              "filename":  "Inclisiran_KPD_model.cpp",
+                              "display_name":  "Inclisiran K-PD Model",
+                              "description":  "Population K-PD model for inclisiran with PCSK9 and LDL-C indirect response mechanisms.",
+                              "compound_mode":  "single",
+                              "compound_interaction_description":  "None",
+                              "author":  "Jane Knochel",
+                              "date_created":  "2025-11-14",
+                              "date_last_updated":  "2025-11-14",
+                              "year":  2023,
+                              "model_type":  "PKPD",
+                              "model_file_type":  "mrgsolve",
+                              "validation_status":  "Not Validated",
+                              "compound":  "Inclisiran",
+                              "model_time_unit":  "days",
+                              "input":  "EFFECT",
+                              "input_label":  "Effect compartment",
+                              "dose_unit":  "mg",
+                              "model_dose_unit":  "mg",
+                              "output":  "Ce_conc, DV_PCSK9, DV_LDL, PCSK9, LDL",
+                              "output_label":  "Inclisiran concentration (mg), Predicted PCSK9 (ng/mL), Predicted LDL-C (mg/dL), PCSK9 (ng/mL), LDL-C (mg/dL)",
+                              "source":  "https://www.accessdata.fda.gov/drugsatfda_docs/nda/2022/214012Orig1s000ClinPharmR.pdf",
+                              "therapeutic_area":  "Cardiovascular",
+                              "indication":  "Hypercholesterolemia, Atherosclerotic cardiovascular disease",
+                              "applications":  "Dose-selection, clinical trial simulation, population PK-PD analysis",
+                              "modality_type":  "RNAi Therapeutic",
+                              "modality":  "siRNA"
+                          },
+    "compounds":  [
+                      {
+                          "compound_id":  1,
+                          "compound_name":  "Inclisiran",
+                          "abbreviation":  "INCL",
+                          "is_required":  true,
+                          "role_in_model":  "DNA/siRNA PCSK9 suppressor for lipid management",
+                          "interaction_with":  [
+
+                                               ],
+                          "therapeutic_dose":  "NA",
+                          "therapeutic_frequency":  "NA",
+                          "route_of_administration":  "",
+                          "pharmacokinetics":  {
+
+                                               }
+                      }
+                  ],
+    "internal_validation_data":  {
+                                     "studies":  [
+
+                                                 ]
+                                 },
+    "external_validation_data":  {
+                                     "studies":  [
+
+                                                 ]
+                                 }
 }

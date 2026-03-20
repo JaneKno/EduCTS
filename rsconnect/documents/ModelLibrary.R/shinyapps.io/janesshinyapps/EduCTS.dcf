@@ -5,7 +5,7 @@ account: janesshinyapps
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 16701982
-bundleId: 11738127
+bundleId: 11738158
 url: https://janesshinyapps.shinyapps.io/EduCTS/
 version: 1
 asMultiple: FALSE

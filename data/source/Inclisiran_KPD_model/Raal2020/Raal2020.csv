@@ -1,0 +1,27 @@
+﻿Study;Drug;Time;DV ;DV_CHR;Time_unit;DV_unit;DV_type;Dose_mg;Dosing_days;n_subjects
+Raal2020;Inclisiran;0;0;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;89.47368421;2.772277228;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;150;6.336633663;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;271.0526316;4.554455446;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;330.2631579;8.118811881;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;450;10.4950495;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;512.5;9.00990099;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;542.1052632;6.930693069;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;0;0;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;89.47368421;-39.40594059;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;150;-44.15841584;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;268.4210526;-33.46534653;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;331.5789474;-42.97029703;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;450;-28.71287129;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;510.5263158;-40;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;540.7894737;-37.02970297;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;0;1.691542289;PCSK9;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;149.2146597;7.960199005;PCSK9;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;328.5340314;17.71144279;PCSK9;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;507.8534031;20.49751244;PCSK9;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;539.2670157;21.19402985;PCSK9;days;Change from baseline in percent;OBS;0;1,90,270,450;240
+Raal2020;Inclisiran;0;0;PCSK9;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;146.5968586;-67.960199;PCSK9;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;328.5340314;-61.69154229;PCSK9;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;507.8534031;-61.69154229;PCSK9;days;Change from baseline in percent;OBS;300;1,90,270,450;242
+Raal2020;Inclisiran;540.5759162;-51.94029851;PCSK9;days;Change from baseline in percent;OBS;300;1,90,270,450;242

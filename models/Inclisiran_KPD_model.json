@@ -7,11 +7,11 @@
                               "compound_interaction_description":  "None",
                               "author":  "Jane Knochel",
                               "date_created":  "2025-11-14",
-                              "date_last_updated":  "2025-11-14",
+                              "date_last_updated":  "2026-03-23",
                               "year":  2023,
                               "model_type":  "PKPD",
                               "model_file_type":  "mrgsolve",
-                              "validation_status":  "Not Validated",
+                              "validation_status":  "Fully Validated",
                               "compound":  "Inclisiran",
                               "model_time_unit":  "days",
                               "input":  "EFFECT",
@@ -37,8 +37,8 @@
                           "interaction_with":  [
 
                                                ],
-                          "therapeutic_dose":  "NA",
-                          "therapeutic_frequency":  "NA",
+                          "therapeutic_dose":  "300",
+                          "therapeutic_frequency":  "Once every 6 months",
                           "route_of_administration":  "",
                           "pharmacokinetics":  {
 
@@ -46,7 +46,142 @@
                       }
                   ],
     "internal_validation_data":  {
-                                     "studies":  [
+                                     "studies":  [{
+                                                         "study_id":  "STUDY_001",
+                                                         "study_name":  "Phase 1 Trial",
+                                                         "study_length_days":  210,
+                                                         "study_data_source":  "10.1056/NEJMoa1609243",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "0 mg SD",
+                                                                          "dose":  0,
+                                                                          "frequency":  "single_dose",
+                                                                          "n_subjects":  6,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Fitzgerald2017/Fitzgerald2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "25 mg SD",
+                                                                          "dose":  25,
+                                                                          "frequency":  "single_dose",
+                                                                          "n_subjects":  3,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Fitzgerald2017/Fitzgerald2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "100 mg SD",
+                                                                          "dose":  100,
+                                                                          "frequency":  "single_dose",
+                                                                          "n_subjects":  3,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Fitzgerald2017/Fitzgerald2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "300 mg SD",
+                                                                          "dose":  300,
+                                                                          "frequency":  "single_dose",
+                                                                          "n_subjects":  3,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Fitzgerald2017/Fitzgerald2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "500 mg SD",
+                                                                          "dose":  500,
+                                                                          "frequency":  "single_dose",
+                                                                          "n_subjects":  3,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Fitzgerald2017/Fitzgerald2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "800 mg SD",
+                                                                          "dose":  800,
+                                                                          "frequency":  "single_dose",
+                                                                          "n_subjects":  3,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Fitzgerald2017/Fitzgerald2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Placebo QM",
+                                                                          "dose":  0,
+                                                                          "frequency":  "Monthly",
+                                                                          "n_subjects":  8,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Fitzgerald2017/Fitzgerald2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "125 mg QW",
+                                                                          "dose":  125,
+                                                                          "frequency":  "Weekly",
+                                                                          "n_subjects":  6,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Fitzgerald2017/Fitzgerald2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "300 mg QM",
+                                                                          "dose":  300,
+                                                                          "frequency":  "Monthly",
+                                                                          "n_subjects":  6,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Fitzgerald2017/Fitzgerald2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "500 mg QM",
+                                                                          "dose":  500,
+                                                                          "frequency":  "Monthly",
+                                                                          "n_subjects":  6,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Fitzgerald2017/Fitzgerald2017.csv"
+                                                                      }
+                                                                  ]
+                                                     },
+                                                     {
+                                                         "study_id":  "STUDY_002",
+                                                         "study_name":  "Phase 3 Trial - ORION-9",
+                                                         "study_length_days":  540,
+                                                         "study_data_source":  "10.1056/NEJMoa1913805",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "Placebo",
+                                                                          "dose":  0,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Raal2020/Raal2020.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "300 mg",
+                                                                          "dose":  300,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Raal2020/Raal2020.csv"
+                                                                      }
+                                                                  ]
+                                                     },
+                                                     {
+                                                         "study_id":  "STUDY_003",
+                                                         "study_name":  "Phase 3 Trial - ORION-10",
+                                                         "study_length_days":  540,
+                                                         "study_data_source":  "10.1056/NEJMoa1912387",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "Placebo",
+                                                                          "dose":  0,
+                                                                          "n_subjects":  780,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Ray2020/Ray2020_ORION10.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "300 mg",
+                                                                          "dose":  300,
+                                                                          "n_subjects":  781,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Ray2020/Ray2020_ORION10.csv"
+                                                                      }
+                                                                  ]
+                                                     },
+                                                     {
+                                                         "study_id":  "STUDY_004",
+                                                         "study_name":  "Phase 3 Trial - ORION-11",
+                                                         "study_length_days":  540,
+                                                         "study_data_source":  "10.1056/NEJMoa1912387",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "Placebo",
+                                                                          "dose":  0,
+                                                                          "n_subjects":  807,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Ray2020/Ray2020_ORION11.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "300 mg",
+                                                                          "dose":  300,
+                                                                          "n_subjects":  810,
+                                                                          "data_location":  "data/source/Inclisiran_KPD_model/Ray2020/Ray2020_ORION11.csv"
+                                                                      }
+                                                                  ]
+                                                     }
 
                                                  ]
                                  },

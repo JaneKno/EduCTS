@@ -1,0 +1,27 @@
+﻿Study;Study_CHR;Drug;Time;DV ;DV_CHR;Time_unit;DV_unit;DV_type;Dose_mg;Dosing_days;n_subjects
+Ray2020;Orion-10;Inclisiran;0;0;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;88.47972973;1.986532766;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;147.7702703;1.620696039;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;269.0878378;4.589735283;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;329.2905405;5.86842836;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;450.6081081;3.084042947;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;509.8986486;2.307247316;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;540;1.919196594;LDL;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;0;0;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;88.17567568;-54.04109589;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;147.7702703;-58.79026287;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;269.0878378;-48.01300444;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;329.2905405;-55.77540726;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;448.7837838;-45.41049611;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;510.8108108;-56.04822288;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;540.9121622;-53.55956127;LDL;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;0;0;PCSK9;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;147.7894737;4.692442005;PCSK9;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;329.6842105;8.670491394;PCSK9;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;500.2105263;9.254178099;PCSK9;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;540;6.632077825;PCSK9;days;Change from baseline in percent;OBS;0;1,90,270,450;780
+Ray2020;Orion-10;Inclisiran;0;0;PCSK9;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;147.7894737;-76.35021202;PCSK9;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;327.7894737;-74.92841108;PCSK9;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;502.1052632;-73.49763033;PCSK9;days;Change from baseline in percent;OBS;300;1,90,270,450;781
+Ray2020;Orion-10;Inclisiran;540;-71.8513345;PCSK9;days;Change from baseline in percent;OBS;300;1,90,270,450;781

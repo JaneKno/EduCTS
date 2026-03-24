@@ -13,10 +13,20 @@ models_dir <- "models/" # Adjust path as needed
 # Modify the main function
 generate_input_dataset <- function(treatment_groups, study_length_weeks, design = "parallel", washout_weeks = 4, model_time_unit, input_compartment = "DEPOT", dose_unit = "mg", model_dose_unit = "mg") {
     # Validate input columns and design parameter
-    required_columns <- c("GroupName", "SampleSize", "Treatment", "Dose", "Frequency")
+    # Check if either Frequency or DosingDays is provided
+    has_frequency <- "Frequency" %in% colnames(treatment_groups)
+    has_dosing_days <- "DosingDays" %in% colnames(treatment_groups)
+    
+    required_columns <- c("GroupName", "SampleSize", "Treatment", "Dose")
     if (!all(required_columns %in% colnames(treatment_groups))) {
         stop("Dataset must contain: ", paste(required_columns, collapse = ", "))
     }
+    
+    # Ensure at least one dosing specification method is provided
+    if (!has_frequency && !has_dosing_days) {
+        stop("Either Frequency or DosingDays must be provided")
+    }
+    
     if (!design %in% c("parallel", "cross-over", "factorial")) {
         stop("Design must be either 'parallel', 'cross-over', or 'factorial'")
     }
@@ -25,48 +35,121 @@ generate_input_dataset <- function(treatment_groups, study_length_weeks, design 
     study_length_model_unit <- convert_time(study_length_weeks * 7 * 24, "hours", model_time_unit, model_time_unit)
     washout_length_model_unit <- convert_time(washout_weeks * 7 * 24, "hours", model_time_unit, model_time_unit)
     print(input_compartment)
+    
+    cat("DEBUG: treatment_groups columns:", paste(colnames(treatment_groups), collapse = ", "), "\n")
+    if ("DosingDays" %in% colnames(treatment_groups)) {
+      cat("DEBUG: DosingDays values in treatment_groups:\n")
+      print(treatment_groups$DosingDays)
+    }
+    
     if (design == "parallel") {
-        # Original parallel design code
-      # For each group, subject, and compartment, create a dosing record with the correct dose
-      input_data <- treatment_groups %>%
-  group_by(GroupName, Compartment) %>%
-  mutate(ID = list(1:SampleSize)) %>%
-  unnest(ID) %>%
-  ungroup() %>%
-  mutate(
-    cmt = Compartment,
-    time = 0,
-    amt = ifelse(is.na(Dose) | Treatment %in% c("placebo", "Placebo"), 0, 
-                 convert_dose(Dose, dose_unit, model_dose_unit)),
-    rate = 0,
-    evid = 1,
-    ss = 0,
-    Period = 1,
-    ii = case_when(
-      Frequency == "Twice daily" ~ convert_time(12, "hours", model_time_unit, model_time_unit),
-      Frequency == "Daily" ~ convert_time(24, "hours", model_time_unit, model_time_unit),
-      Frequency == "Weekly" ~ convert_time(168, "hours", model_time_unit, model_time_unit),
-      Frequency == "Biweekly" ~ convert_time(336, "hours", model_time_unit, model_time_unit),
-      Frequency == "Every 4 weeks" ~ convert_time(672, "hours", model_time_unit, model_time_unit),
-      Frequency == "Monthly" ~ convert_time(720, "hours", model_time_unit, model_time_unit),
-      Frequency == "Once every 3 months" ~ convert_time(2160, "hours", model_time_unit, model_time_unit),
-      Frequency == "Once every 4 months" ~ convert_time(2880, "hours", model_time_unit, model_time_unit),
-      Frequency == "Every 8 weeks" ~ convert_time(1344, "hours", model_time_unit, model_time_unit),
-      Frequency == "single_dose" ~ study_length_model_unit,  # Single dose: ii is not used (addl = 0)
-      TRUE ~ NA_real_
-    ),
-    # Conditional addl: use provided value if it exists, otherwise calculate from study length
-    addl = if ("Addl" %in% colnames(treatment_groups)) {
-      !!rlang::sym("Addl")  # Use provided Addl column
-    } else {
-      case_when(
-        Frequency == "single_dose" ~ 0,  # Single dose has no additional doses
-        TRUE ~ pmax(floor(study_length_model_unit / ii) - 1, 0)  # Ensure addl >= 0
-      )
-    },
-    SEQ = 1
-  )%>% 
-  arrange(GroupName, ID, cmt,time)
+        # Parallel design code
+      cat("DEBUG PARALLEL: has_dosing_days =", has_dosing_days, "\n")
+      cat("DEBUG PARALLEL: Column names:", paste(colnames(treatment_groups), collapse = ", "), "\n")
+      
+      if (has_dosing_days) {
+        cat("DEBUG PARALLEL: DosingDays values:", paste(treatment_groups$DosingDays, collapse = " | "), "\n")
+        cat("DEBUG PARALLEL: any(!is.na(treatment_groups$DosingDays)) =", any(!is.na(treatment_groups$DosingDays)), "\n")
+      }
+      
+      use_dosing_days <- has_dosing_days && any(!is.na(treatment_groups$DosingDays))
+      cat("DEBUG PARALLEL: use_dosing_days =", use_dosing_days, "\n")
+      
+      if (use_dosing_days) {
+        # ===== DOSING_DAYS METHOD =====
+        cat("DEBUG PARALLEL: Using DOSING_DAYS method\n")
+        # Build base structure with ID expansion and compartment grouping
+        input_data <- treatment_groups %>%
+          group_by(GroupName, Compartment) %>%
+          mutate(ID = list(1:SampleSize)) %>%
+          unnest(ID) %>%
+          ungroup()
+        
+        cat("DEBUG PARALLEL: After expand, nrows =", nrow(input_data), "\n")
+        print(head(input_data))
+        
+        # Expand by dosing days
+        input_data <- input_data %>%
+          rowwise() %>%
+          mutate(
+            dosing_days = list(tryCatch({
+              days_str <- DosingDays
+              if (is.na(days_str) || days_str == "") {
+                numeric(0)
+              } else if (is.character(days_str)) {
+                as.numeric(strsplit(as.character(days_str), ",")[[1]])
+              } else {
+                as.numeric(unlist(days_str))
+              }
+            }, error = function(e) {
+              cat("WARNING: Could not parse dosing_days:", e$message, "\n")
+              numeric(0)
+            }))
+          ) %>%
+          ungroup() %>%
+          unnest(dosing_days, keep_empty = TRUE) %>%
+          rename(time_day = dosing_days) %>%
+          mutate(
+            cmt = Compartment,
+            time = convert_time(time_day, "days", model_time_unit, model_time_unit),
+            amt = ifelse(is.na(Dose) | Treatment %in% c("placebo", "Placebo"), 0,
+                        convert_dose(Dose, dose_unit, model_dose_unit)),
+            rate = 0,
+            evid = 1,
+            ss = 0,
+            ii = NA_real_,
+            addl = 0,
+            Period = 1,
+            SEQ = 1
+          ) %>%
+          select(GroupName, ID, time, amt, rate, cmt, evid, ii, addl, ss, Period, SEQ) %>%
+          arrange(GroupName, ID, cmt, time)
+        
+        cat("DEBUG PARALLEL: After dosing_days expansion, nrows =", nrow(input_data), "\n")
+      } else {
+        # ===== FREQUENCY+ADDL METHOD =====
+        cat("DEBUG PARALLEL: Using FREQUENCY+ADDL method\n")
+        input_data <- treatment_groups %>%
+          group_by(GroupName, Compartment) %>%
+          mutate(ID = list(1:SampleSize)) %>%
+          unnest(ID) %>%
+          ungroup() %>%
+          mutate(
+            cmt = Compartment,
+            time = 0,
+            amt = ifelse(is.na(Dose) | Treatment %in% c("placebo", "Placebo"), 0, 
+                         convert_dose(Dose, dose_unit, model_dose_unit)),
+            rate = 0,
+            evid = 1,
+            ss = 0,
+            Period = 1,
+            ii = case_when(
+              Frequency == "Twice daily" ~ convert_time(12, "hours", model_time_unit, model_time_unit),
+              Frequency == "Daily" ~ convert_time(24, "hours", model_time_unit, model_time_unit),
+              Frequency == "Weekly" ~ convert_time(168, "hours", model_time_unit, model_time_unit),
+              Frequency == "Biweekly" ~ convert_time(336, "hours", model_time_unit, model_time_unit),
+              Frequency == "Every 4 weeks" ~ convert_time(672, "hours", model_time_unit, model_time_unit),
+              Frequency == "Monthly" ~ convert_time(720, "hours", model_time_unit, model_time_unit),
+              Frequency == "Once every 3 months" ~ convert_time(2160, "hours", model_time_unit, model_time_unit),
+              Frequency == "Once every 4 months" ~ convert_time(2880, "hours", model_time_unit, model_time_unit),
+              Frequency == "Once every 6 months" ~ convert_time(4320, "hours", model_time_unit, model_time_unit),
+              Frequency == "Every 8 weeks" ~ convert_time(1344, "hours", model_time_unit, model_time_unit),
+              Frequency == "single_dose" ~ study_length_model_unit,
+              TRUE ~ NA_real_
+            ),
+            addl = if ("Addl" %in% colnames(treatment_groups)) {
+              !!rlang::sym("Addl")
+            } else {
+              case_when(
+                Frequency == "single_dose" ~ 0,
+                TRUE ~ pmax(floor(study_length_model_unit / ii) - 1, 0)
+              )
+            },
+            SEQ = 1
+          ) %>%
+          select(GroupName, ID, time, amt, rate, cmt, evid, ii, addl, ss, Period, SEQ) %>%
+          arrange(GroupName, ID, cmt, time)
+      }
         # input_data <- treatment_groups %>%
         #   group_by(GroupName) %>%
         #   mutate(ID = list(1:SampleSize)) %>% 
@@ -130,6 +213,7 @@ generate_input_dataset <- function(treatment_groups, study_length_weeks, design 
                     Frequency == "Monthly" ~ convert_time(720, "hours", model_time_unit, model_time_unit),
                     Frequency == "Once every 3 months" ~ convert_time(2160, "hours", model_time_unit, model_time_unit),
                     Frequency == "Once every 4 months" ~ convert_time(2880, "hours", model_time_unit, model_time_unit),
+                    Frequency == "Once every 6 months" ~ convert_time(4320, "hours", model_time_unit, model_time_unit),
                     Frequency == "Every 8 weeks" ~ convert_time(1344, "hours", model_time_unit, model_time_unit),
                     TRUE ~ NA_real_
                 ),
@@ -139,14 +223,16 @@ generate_input_dataset <- function(treatment_groups, study_length_weeks, design 
                 } else {
                   pmax(floor(period_length_model_unit / ii) - 1, 0)  # Ensure addl >= 0
                 }) %>% 
+          ungroup() %>%
           group_by(GroupName) %>% 
           mutate(
               amt = ifelse(Sequence == "Placebo", 0, convert_dose(Dose, dose_unit, model_dose_unit)),
-                rate = 0,
-                cmt = input_compartment,
-                evid = 1,
-                ss = 0
-            )
+              rate = 0,
+              cmt = input_compartment,
+              evid = 1,
+              ss = 0
+          ) %>%
+          ungroup()
     } else if (design == "factorial") {
         # Get unique treatments excluding placebo
         treatments <- unique(treatment_groups$Treatment[!treatment_groups$Treatment %in% c("Placebo", "placebo")])
@@ -210,6 +296,7 @@ generate_input_dataset <- function(treatment_groups, study_length_weeks, design 
                     "Monthly" = convert_time(720, "hours", model_time_unit, model_time_unit),
                     "Once every 3 months" = convert_time(2160, "hours", model_time_unit, model_time_unit),
                     "Once every 4 months" = convert_time(2880, "hours", model_time_unit, model_time_unit),
+                    "Once every 6 months" = convert_time(4320, "hours", model_time_unit, model_time_unit),
                     "Every 8 weeks" = convert_time(1344, "hours", model_time_unit, model_time_unit)
                 ),
             TRUE ~ first(treatment_groups$Frequency) %>%
@@ -222,6 +309,7 @@ generate_input_dataset <- function(treatment_groups, study_length_weeks, design 
                     "Monthly" = convert_time(720, "hours", model_time_unit, model_time_unit),
                     "Once every 3 months" = convert_time(2160, "hours", model_time_unit, model_time_unit),
                     "Once every 4 months" = convert_time(2880, "hours", model_time_unit, model_time_unit),
+                    "Once every 6 months" = convert_time(4320, "hours", model_time_unit, model_time_unit),
                     "Every 8 weeks" = convert_time(1344, "hours", model_time_unit, model_time_unit)
                 )
         ),
@@ -505,14 +593,28 @@ server <- function(input, output, session) {
         meta$output_label <- strsplit(json_meta$output_label, ",\\s*")[[1]]
       }
       
-      if (!is.null(json_meta$therapeutic_dose)) {
+      # Try to get therapeutic_dose from compounds array first (new structure at root level)
+      if (!is.null(full_json$compounds) && length(full_json$compounds) > 0 && !is.null(full_json$compounds[[1]]$therapeutic_dose)) {
+        dose_val <- full_json$compounds[[1]]$therapeutic_dose
+        if (!is.na(dose_val) && dose_val != "NA" && dose_val != "N/A") {
+          meta$therapeutic_dose <- as.numeric(dose_val)
+        }
+      } else if (!is.null(json_meta$therapeutic_dose)) {
+        # Fallback to old structure for backward compatibility
         dose_val <- json_meta$therapeutic_dose
         if (!is.na(dose_val) && dose_val != "NA" && dose_val != "N/A") {
           meta$therapeutic_dose <- as.numeric(dose_val)
         }
       }
       
-      if (!is.null(json_meta$therapeutic_frequency)) {
+      # Try to get therapeutic_frequency from compounds array first (new structure at root level)
+      if (!is.null(full_json$compounds) && length(full_json$compounds) > 0 && !is.null(full_json$compounds[[1]]$therapeutic_frequency)) {
+        freq_val <- full_json$compounds[[1]]$therapeutic_frequency
+        if (!is.na(freq_val) && freq_val != "NA" && freq_val != "N/A") {
+          meta$therapeutic_frequency <- freq_val
+        }
+      } else if (!is.null(json_meta$therapeutic_frequency)) {
+        # Fallback to old structure for backward compatibility
         freq_val <- json_meta$therapeutic_frequency
         if (!is.na(freq_val) && freq_val != "NA" && freq_val != "N/A") {
           meta$therapeutic_frequency <- freq_val
@@ -646,7 +748,7 @@ time_conversion <- switch(
                     selectInput(
                       inputId = paste0("m", model_idx, "_frequency_", i, "_", j),
                       label = paste("Frequency for", meta$input_labels[j]),
-                      choices = c("Twice daily", "Daily", "Weekly", "Biweekly","Every 4 weeks", "Monthly", "Once every 3 months", "Once every 4 months","Every 8 weeks"),
+                      choices = c("Twice daily", "Daily", "Weekly", "Biweekly","Every 4 weeks", "Monthly", "Once every 3 months", "Once every 4 months","Every 8 weeks", "Once every 6 months"),
                       selected = default_freq
                     )
                   )
@@ -713,7 +815,7 @@ time_conversion <- switch(
         textInput("treatment", "Treatment", value = "Drug X"),
         numericInput("dose", "Dose (mg)", value = 10, min = 0),
         numericInput("washout_weeks", "Washout Period (weeks)", value = 4, min = 0),
-        selectInput("frequency", "Frequency", choices = c("single_dose", "Twice daily", "Daily", "Weekly", "Biweekly", "Every 4 weeks", "Monthly", "Once every 3 months", "Once every 4 months", "Every 8 weeks"), selected = "Weekly")
+        selectInput("frequency", "Frequency", choices = c("single_dose", "Twice daily", "Daily", "Weekly", "Biweekly", "Every 4 weeks", "Monthly", "Once every 3 months", "Once every 4 months", "Every 8 weeks", "Once every 6 months"), selected = "Weekly")
       )
     } else if (input$trial_design == "Factorial") {
       # Factorial design: Multiple treatments
@@ -725,7 +827,7 @@ time_conversion <- switch(
         numericInput("dose_1", "Dose for Treatment 1 (mg)", value = 10, min = 0),
         textInput("treatment_2", "Treatment 2", value = "Drug B"),
         numericInput("dose_2", "Dose for Treatment 2 (mg)", value = 10, min = 0),
-        selectInput("frequency", "Frequency", choices = c("single_dose", "Twice daily", "Daily", "Weekly", "Biweekly", "Every 4 weeks", "Monthly", "Once every 3 months", "Once every 4 months", "Every 8 weeks"), selected = "Weekly")
+        selectInput("frequency", "Frequency", choices = c("single_dose", "Twice daily", "Daily", "Weekly", "Biweekly", "Every 4 weeks", "Monthly", "Once every 3 months", "Once every 4 months", "Every 8 weeks", "Once every 6 months"), selected = "Weekly")
       )
     }
   })
@@ -1666,18 +1768,10 @@ output$sim_result <- renderUI({
         study_config_hash <- NULL
         cache_hit <- FALSE
         
-        first_arm <- arms[[1]]
-        if (!is.null(first_arm) && is.list(first_arm) && !is.null(first_arm$data_location)) {
-          data_location <- first_arm$data_location
-          parts <- strsplit(data_location, "/")[[1]]
-          model_idx_in_path <- which(parts == model_name)
-          if (length(model_idx_in_path) > 0 && model_idx_in_path + 1 <= length(parts)) {
-            study_folder_name <- parts[model_idx_in_path + 1]
-            study_cache_dir <- file.path("data/derived/", "validation", model_name, study_folder_name)
-            # Create the directory immediately so arm summaries can be saved
-            dir.create(study_cache_dir, recursive = TRUE, showWarnings = FALSE)
-          }
-        }
+        # Use study_id for unique cache directory (handles multiple studies from same publication)
+        study_cache_dir <- file.path("data/derived/", "validation", model_name, study_id)
+        # Create the directory immediately so arm summaries can be saved
+        dir.create(study_cache_dir, recursive = TRUE, showWarnings = FALSE)
         
         # Compute hash of the complete study configuration (all arms)
         if (!is.null(study_cache_dir)) {
@@ -1764,6 +1858,7 @@ output$sim_result <- renderUI({
         frequency_from_data <- NULL  # To store frequency from data file
         n_subjects_from_data <- NULL  # To store n_subjects from data file
         no_doses_from_data <- NULL  # To store number of doses from data file
+        dosing_days_from_data <- NULL  # To store dosing_days from data file
         
         if (!is.null(data_location) && data_location != "") {
           data_path <- file.path(data_location)
@@ -1883,6 +1978,24 @@ output$sim_result <- renderUI({
                   }
                 }
               }
+              
+              # Extract dosing_days (specific times for dose administration)
+              possible_dosing_days_cols <- c("dosing_days", "DosingDays", "Dosing_Days", "dosing_times", "Dosing_Times", "dose_days", "Dose_Days")
+              cat("DEBUG: Arm", arm_idx, "- looking for dosing_days columns in CSV. Available columns:", paste(names(obs_filtered_for_metadata), collapse = ", "), "\n")
+              
+              # Try case-insensitive matching
+              for (col_pattern in possible_dosing_days_cols) {
+                matching_col <- grep(paste0("^", col_pattern, "$"), names(obs_filtered_for_metadata), ignore.case = TRUE, value = TRUE)
+                if (length(matching_col) > 0) {
+                  days_val <- unique(obs_filtered_for_metadata[[matching_col[1]]])[1]
+                  if (!is.na(days_val) && days_val != "") {
+                    dosing_days_from_data <- as.character(days_val)
+                    cat("DEBUG: Arm", arm_idx, "- extracted dosing_days from data column '", matching_col[1], "':", dosing_days_from_data, "\n")
+                    break
+                  }
+                }
+              }
+              cat("DEBUG: Arm", arm_idx, "- after CSV extraction, dosing_days_from_data =", dosing_days_from_data, "\n")
             }, error = function(e) {
               cat("DEBUG: Could not extract time/frequency/n_subjects/no_doses from data_location for arm", arm_idx, ":", e$message, "\n")
               NULL
@@ -1935,6 +2048,28 @@ output$sim_result <- renderUI({
           NULL  # Will be calculated from frequency if not specified
         }
         
+        # Determine dosing_days: JSON > data file (if JSON not specified)
+        arm_dosing_days <- if (is.list(arm) && !is.null(arm$dosing_days)) {
+          # Parse JSON dosing_days - could be a string or array
+          dosing_days_val <- arm$dosing_days
+          if (is.character(dosing_days_val)) {
+            dosing_days_val  # Already a string like "1,90,270,450"
+          } else if (is.numeric(dosing_days_val) || is.list(dosing_days_val)) {
+            # Convert array/vector to comma-separated string
+            paste(as.numeric(unlist(dosing_days_val)), collapse = ",")
+          } else {
+            NULL
+          }
+        } else if (!is.null(dosing_days_from_data)) {
+          cat("DEBUG: Arm", arm_idx, "- using dosing_days from data:", dosing_days_from_data, "\n")
+          dosing_days_from_data
+        } else {
+          cat("DEBUG: Arm", arm_idx, "- NO dosing_days found (JSON or data)\n")
+          NULL
+        }
+        
+        cat("DEBUG: Arm", arm_idx, "- FINAL arm_dosing_days =", arm_dosing_days, "\n")
+        
         treatment_groups_df <- data.frame(
           GroupName = arm_name,
           SampleSize = arm_n_subjects,
@@ -1944,6 +2079,14 @@ output$sim_result <- renderUI({
           Compartment = meta$input_compartment[1]
         )
         
+        # Add DosingDays column if dosing_days is provided
+        if (!is.null(arm_dosing_days)) {
+          treatment_groups_df$DosingDays <- arm_dosing_days
+          cat("DEBUG: Added DosingDays column for arm", arm_idx, ", value:", arm_dosing_days, "\n")
+        } else {
+          cat("DEBUG: NOT adding DosingDays column for arm", arm_idx, "because arm_dosing_days is NULL\n")
+        }
+        
         # Add Addl column if we have no_doses information
         if (!is.null(arm_no_doses)) {
           treatment_groups_df$Addl <- as.numeric(arm_no_doses) - 1
@@ -1952,6 +2095,7 @@ output$sim_result <- renderUI({
         
         cat("DEBUG: Treatment groups for arm", arm_idx, ":\n")
         print(treatment_groups_df)
+        cat("DEBUG: Columns in treatment_groups_df:", paste(colnames(treatment_groups_df), collapse = ", "), "\n")
         cat("DEBUG: Study length weeks:", study_length_weeks, "\n")
         cat("DEBUG: Model time unit:", meta$model_time_unit, "\n")
         cat("DEBUG: Input compartment:", meta$input_compartment[1], "\n")

@@ -1,1 +1,1 @@
-selected_model_filenames <- c("Olezarsen_PKPD_model.cpp", "Plozasiran_KPD_model.cpp")
+selected_model_filename <- "Inclisiran_KPD_model.cpp"

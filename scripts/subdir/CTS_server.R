@@ -2486,18 +2486,21 @@ output$sim_result <- renderUI({
                   cat("DEBUG PLOT: Before filter - observed_data has", nrow(observed_data), "rows\n")
                   cat("DEBUG PLOT: Columns in observed_data:", paste(names(observed_data), collapse = ", "), "\n")
                   
-                  # Match to our output variables - try exact match first, then partial match
+                  # Match to our output variables - try exact match first against variable names
+                  # Match CSV output_var against summaries$variable (actual model outputs), not labels
                   observed_data_exact <- observed_data %>%
-                    filter(output_var %in% unique(summaries$label))
+                    filter(output_var %in% unique(summaries$variable))
                   
                   cat("DEBUG PLOT: After exact match - observed_data has", nrow(observed_data_exact), "rows\n")
                   
                   if (nrow(observed_data_exact) > 0) {
                     cat("DEBUG PLOT: Exact match successful\n")
+                    # Join with label_df to add the display label
                     observed_data <- observed_data_exact %>%
-                      rename(label = output_var)
+                      left_join(label_df, by = c("output_var" = "variable")) %>%
+                      select(-output_var)
                   } else {
-                    cat("DEBUG PLOT: CSV variable names:", paste(names(obs_raw), collapse = ", "), "\n")
+                    cat("DEBUG PLOT: CSV variable names:", paste(csv_vars, collapse = ", "), "\n")
                     
                     observed_data <- obs_raw %>%
                       select(Time = "Time", 
@@ -2508,34 +2511,34 @@ output$sim_result <- renderUI({
                         Time = as.numeric(Time),
                         observed_value = as.numeric(observed_value),
                         Time = convert_time(Time, time_unit_from_data, input$time_unit, time_unit_from_data),
-                        # Try to match by finding summary labels that contain this variable name
+                        # Try to match against actual model variable names (not labels)
                         # Strip common prefixes (DV_, DV) to get the core variable name
                         core_var = gsub("^DV_|^DV", "", output_var, ignore.case = TRUE),
-                        matched_label = sapply(core_var, function(var) {
-                          # Check if this is a percent change variable
+                        matched_var = sapply(core_var, function(var) {
+                          # Try to match against summaries$variable (actual model outputs)
+                          direct_matches <- summaries$variable[grepl(var, summaries$variable, ignore.case = TRUE)]
+                          
+                          if (length(direct_matches) > 0) {
+                            cat("DEBUG: Matched '", var, "' to model variable '", direct_matches[1], "'\n")
+                            return(direct_matches[1])
+                          }
+                          
+                          # If no direct match, try percent change variants
                           is_pct_change <- grepl("pct_change|percent_change|_pct|_pct_chg", var, ignore.case = TRUE)
-                          
                           if (is_pct_change) {
-                            # For percent change variables, prefer labels containing both the base variable and "change"/"percent"/"%"
                             base_var <- gsub("_pct_change|_percent_change|_pct_chg|_pct", "", var, ignore.case = TRUE)
-                            matches <- summaries$label[
-                              grepl(base_var, summaries$label, ignore.case = TRUE) &
-                              grepl("change|percent|%", summaries$label, ignore.case = TRUE)
-                            ]
-                          } else {
-                            # For regular variables, match directly
-                            matches <- summaries$label[grepl(var, summaries$label, ignore.case = TRUE)]
+                            pct_matches <- summaries$variable[grepl(base_var, summaries$variable, ignore.case = TRUE)]
+                            if (length(pct_matches) > 0) {
+                              cat("DEBUG: Matched percent change '", var, "' to model variable '", pct_matches[1], "'\n")
+                              return(pct_matches[1])
+                            }
                           }
-                          
-                          if (length(matches) > 0) {
-                            cat("DEBUG: Matched '", var, "' (pct_change:", is_pct_change, ") to label '", matches[1], "'\n")
-                            matches[1]
-                          }
+                          NA_character_
                         })
                       ) %>%
-                      filter(!is.na(matched_label)) %>%
-                      select(-output_var, -core_var) %>%
-                      rename(label = matched_label)
+                      filter(!is.na(matched_var)) %>%
+                      left_join(label_df, by = c("matched_var" = "variable")) %>%
+                      select(-output_var, -core_var, -matched_var)
                     
                     cat("DEBUG PLOT: After partial match - observed_data has", nrow(observed_data), "rows\n")
                   }
@@ -2599,25 +2602,37 @@ output$sim_result <- renderUI({
           }
 
           
-          # Filter summaries to only include variables with observed data (if available)
-          # When observed data exists, filter to show only matching variables
-          if (!is.null(observed_data) && nrow(observed_data) > 0 && "label" %in% names(observed_data)) {
-            cat("DEBUG PLOT: Filtering summaries to only show variables with observed data\n")
+          # Filter summaries to ONLY include variables present in observed data
+          # Match on actual variable names, not display labels
+          if (!is.null(observed_data) && nrow(observed_data) > 0) {
+            cat("DEBUG PLOT: Observed data has", length(unique(observed_data$label)), "unique labels\n")
             cat("DEBUG PLOT: Observed labels:", paste(unique(observed_data$label), collapse = ", "), "\n")
-            cat("DEBUG PLOT: Summary labels before filter:", paste(unique(summaries$label), collapse = ", "), "\n")
+            cat("DEBUG PLOT: Summary variables before filter:", paste(unique(summaries$variable), collapse = ", "), "\n")
+            
             summaries_filtered <- summaries %>%
               filter(label %in% unique(observed_data$label))
-            cat("DEBUG PLOT: Summary labels after filter:", paste(unique(summaries_filtered$label), collapse = ", "), "\n")
             
-            # Only use filtered summaries if we actually have matching data
+            cat("DEBUG PLOT: Summaries after filtering to observed labels:", nrow(summaries_filtered), "rows\n")
+            cat("DEBUG PLOT: Summary variables after filter:", paste(unique(summaries_filtered$variable), collapse = ", "), "\n")
+            
             if (nrow(summaries_filtered) > 0) {
               summaries <- summaries_filtered
-              cat("DEBUG PLOT: Using filtered summaries with", nrow(summaries), "rows\n")
+              cat("DEBUG PLOT: SUCCESS - Showing only observed/matched outputs\n")
             } else {
-              cat("DEBUG PLOT: WARNING - No summaries matched observed data labels, showing all simulation summaries instead\n")
+              cat("DEBUG PLOT: WARNING - No summaries matched observed data labels\n")
+              cat("DEBUG PLOT: This means validation data doesn't match model outputs. Check variable names.\n")
+              return(ggplotly(
+                ggplot() + 
+                  geom_text(aes(x = 0.5, y = 0.5, label = "Validation data variables do not match model outputs"), 
+                           hjust = 0.5, vjust = 0.5) +
+                  theme_minimal() +
+                  xlim(0, 1) + ylim(0, 1) +
+                  theme(axis.title = element_blank(), axis.text = element_blank())
+              ))
             }
           } else {
-            cat("DEBUG PLOT: No observed data found or observed_data missing label column, showing all simulation summaries\n")
+            cat("DEBUG PLOT: No observed data - showing only model-defined outputs\n")
+            summaries <- summaries %>% filter(!is.na(label))
           }
           
           time_label <- switch(input$time_unit,
@@ -2669,13 +2684,12 @@ output$sim_result <- renderUI({
           }
           
           # Add observed data points if available
-          # Only show observed data for labels that exist in summaries
+          # observed_data already has the correct labels from the join above
           if (!is.null(observed_data) && nrow(observed_data) > 0) {
-            # Filter observed data to only labels present in summaries
-            observed_data_to_plot <- observed_data %>%
-              filter(label %in% unique(summaries$label))
+            # observed_data is already filtered to matching labels via the join
+            observed_data_to_plot <- observed_data
             
-            cat("DEBUG PLOT: Observed data to plot:", nrow(observed_data_to_plot), "rows (filtered from", nrow(observed_data), ")\n")
+            cat("DEBUG PLOT: Observed data to plot:", nrow(observed_data_to_plot), "rows\n")
             
             if (nrow(observed_data_to_plot) > 0) {
               g <- g + geom_point(data = observed_data_to_plot, 

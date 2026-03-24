@@ -5,8 +5,9 @@ account: janesshinyapps
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 16701982
-bundleId: 11738176
+bundleId: 11752782
 url: https://janesshinyapps.shinyapps.io/EduCTS/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: DOSING_DAYS_EXAMPLES.md|DOSING_DAYS_USAGE.md|IMPLEMENTATION_SUMMARY.md

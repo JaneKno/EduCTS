@@ -7,17 +7,17 @@
                               "compound_interaction_description":  "None",
                               "author":  "Jane Knochel",
                               "date_created":  "2025-11-26",
-                              "date_last_updated":  "2025-11-26",
+                              "date_last_updated":  "2026-03-28",
                               "year":  2024,
                               "model_type":  "PKPD",
                               "model_file_type":  "mrgsolve",
-                              "validation_status":  "Not Validated",
+                              "validation_status":  "Validated",
                               "compound":  "Fitusiran",
                               "model_time_unit":  "hours",
                               "input":  "DEPOT",
                               "input_label":  "Depot compartment",
                               "dose_unit":  "mg",
-                              "model_dose_unit":  "N/A",
+                              "model_dose_unit":  "mg",
                               "output":  "DV_AT, CRISC_out, C_CENTRAL, AT",
                               "output_label":  "Observed AT (%), RISC Concentration (mg/g), Central Liver Concentration (mg/g), Antithrombin (%)",
                               "source":  "https://www.accessdata.fda.gov/drugsatfda_docs/nda/2025/219019Orig1s000IntegratedR.pdf",
@@ -34,19 +34,25 @@
                           "abbreviation":  "FIT",
                           "is_required":  true,
                           "role_in_model":  "RNA interference Factor IX silencer for hemophilia",
-                          "interaction_with":  [
-
-                                               ],
-                          "therapeutic_dose":  "NA",
-                          "therapeutic_frequency":  "NA",
-                          "route_of_administration":  "",
-                          "pharmacokinetics":  {
-
-                                               }
+                          "therapeutic_dose":  "80",
+                          "therapeutic_frequency":  "Monthly",
+                          "route_of_administration":  "subcutaneous"
                       }
                   ],
     "internal_validation_data":  {
-                                     "studies":  [
+                                     "studies":  [{
+                                                         "study_id":  "STUDY_001",
+                                                         "study_name":  "Phase 3 Trial - ATLAS-PPX trial",
+                                                         "study_length_days":  180,
+                                                         "study_data_source":  " https://doi.org/10.1182/blood.2023021864",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "80 mg QM",
+                                                                          "dose":  80,
+                                                                          "data_location":  "data/source/Fitusiran_PKPD_model/Kenet2024/Kenet2024.csv"
+                                                                      }
+                                                                  ]
+                                                     }
 
                                                  ]
                                  },

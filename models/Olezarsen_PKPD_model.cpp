@@ -114,7 +114,7 @@ dxdt_APOC3 = Kin_i * (1 - inhibition) - Kout_i * APOC3;
 
 $TABLE
 // Observed concentrations with residual error
-double DV_OLEZ = (CENTRAL / Vc_F_i) * 1000 * (1 + (ADA_binary == 1 ? EPS(2) : EPS(1)));  // ng/mL
+double DV_Cc = (CENTRAL / Vc_F_i) * 1000 * (1 + (ADA_binary == 1 ? EPS(2) : EPS(1)));  // ng/mL
 
 double DV_APOC3 = APOC3 * (1 + (ADA_STATUS == 1 ? EPS(4) : EPS(3)));  // mg/dL
 
@@ -123,7 +123,7 @@ double Cc_out = (CENTRAL / Vc_F_i) * 1000;  // Central concentration (ng/mL)
 double APOC3_pct_change = ((APOC3 - BASE_APOC3) / BASE_APOC3) * 100;  // % change from baseline
 
 $CAPTURE
-DV_OLEZ           // Observed olezarsen concentration (ng/mL)
+DV_Cc           // Observed olezarsen concentration (ng/mL)
 DV_APOC3          // Observed ApoC-III (mg/dL)
 Cc_out            // Central concentration (ng/mL)
 APOC3_pct_change  // % change in ApoC-III from baseline

@@ -3,13 +3,15 @@ Fitusiran PopK-PD Model with AT Lowering via RISC-mediated inhibition
 
 $PARAM
 // PK parameters - Population estimates
+DOSE =80 // mg Default, overwritten by dosing event input dataset
+
 Ka = 0.157        // Absorption rate (1/h)
 V2 = 3300         // Liver central volume (g)
 V3 = 6075         // Liver peripheral volume (g)
 CL = 39.6         // Clearance from liver central compartment (g/h)
 CL2 = 27.20       // Liver inter-compartment clearance (g/h)
-minQ = 0.0225     // Minimum clearance into RISC compartment (g/h)
-Qmax = 0.029      // Dose dependent clearance into RISC compartment (g/h)
+minQ = 0.0225     // Minimum transfer rate constant into RISC compartment (1/h)
+Qmax = 0.029      // Dose dependent transfer rate constant into RISC compartment (1/h)
 RV = 9375         // RISC volume (g)
 CLR = 11.2        // Clearance from RISC compartment (g/h)
 IC50 = 0.0004     // RISC concentration for 50% of maximum effect (mg/g)
@@ -17,7 +19,8 @@ Imax = 0.9        // Maximum inhibition of AT production
 Kin = 0.99        // AT production rate (%/h)
 Kout = 0.01       // AT elimination rate (1/h)
 F = 1             // Dose effect on bioavailability (fixed)
-thetaQ = 0.2      // Hill's coefficient for dose dependent clearance into RISC compartment
+thetaQ = 0.2      // Hill coefficient for dose-dependent turnover rate into RISC (de-escalated arm)
+POP = 0           // De-escalation flag: 0 = standard 80 mg dose, 1 = de-escalated 20 mg Q2M dose
 
 // Derived parameter
 BASE_AT = 100     // Baseline AT (%) - derived from Kin/Kout at steady state
@@ -54,15 +57,15 @@ double Kin_i = Kout_i * BASE_AT;  // Maintain baseline AT at 100%
 AT_0 = BASE_AT;
 
 $ODE
-// Calculate dose-dependent clearance to RISC
-double DOSE = DEPOT + CENTRAL + PERIPH + RISC;  // Total amount in system
-double Q = minQ + (Qmax * pow(DOSE, thetaQ_i)) / (1 + pow(DOSE, thetaQ_i));
+// Turnover rate from peripheral liver into RISC (Eq. 1)
+// POP=0 (standard 80 mg): Q = minQ; POP=1 (de-escalated 20 mg Q2M): Q = Qmax*(Dose/50)^thetaQ
+double Q = minQ * (1 - POP) + POP * Qmax * pow(DOSE / 50.0, thetaQ_i);
 
 // PK equations
 dxdt_DEPOT = -Ka * DEPOT;
-dxdt_CENTRAL = Ka * F * DEPOT - (CL_i + CL2 + Q) * CENTRAL / V2 + CL2 * PERIPH / V3;
-dxdt_PERIPH = CL2 * CENTRAL / V2 - CL2 * PERIPH / V3;
-dxdt_RISC = Q * CENTRAL / V2 - CLR * RISC / RV;
+dxdt_CENTRAL = Ka * F * DEPOT - (CL_i + CL2) * CENTRAL / V2 + CL2 * PERIPH / V3;
+dxdt_PERIPH = CL2 * CENTRAL / V2 - CL2 * PERIPH / V3 - Q * PERIPH;
+dxdt_RISC = Q * PERIPH - CLR * RISC / RV;
 
 // RISC concentration
 double CRISC = RISC / RV;
@@ -87,4 +90,3 @@ $CAPTURE
 DV_AT        // Observed AT (%)
 CRISC_out    // RISC concentration (mg/g)
 C_CENTRAL    // Central liver concentration (mg/g)
-AT           // True AT (%)

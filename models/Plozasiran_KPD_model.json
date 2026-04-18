@@ -1,4 +1,4 @@
-{
+﻿{
     "model_information":  {
                               "filename":  "Plozasiran_KPD_model.cpp",
                               "display_name":  "Plozasiran K-PD Model",
@@ -20,12 +20,13 @@
                               "model_dose_unit":  "mg",
                               "output":  "DV_APOC3, DV_TG, APOC3, TG, APOC3_pct_change, TG_pct_change, Ce_out",
                               "output_label":  "Predicted APOC3 (mg/dL), Predicted TG (mg/dL), APOC3 (mg/dL), TG (mg/dL), % Change APOC3, % Change TG, Effect Compartment (mg)",
-                              "source":  "NDA Application - Plozasiran Clinical Pharmacology Review, Additional Figures Table 1 and Figure 1",
+                              "source":  "https://www.certara.com/poster/population-k-pd-modeling-of-plozasiran-aro-apoc3-a-galnac-sirna-conjugate-for-the-treatment-of-patients-with-severe-hypertriglyceridemi/",
                               "therapeutic_area":  "Metabolic Disorders",
                               "indication":  "Severe Hypertriglyceridemia (SHTG)",
                               "applications":  "Dose-selection, clinical trial simulation, K-PD modeling, APOC3 and TG lowering prediction",
                               "modality_type":  "RNAi Therapeutic",
-                              "modality":  "ASO"
+                              "modality":  "ASO",
+                              "clinical_application":  "Predict ApoC-III and triglyceride lowering with plozasiran across dose regimens to support dose selection and clinical trial design in severe hypertriglyceridaemia."
                           },
     "compounds":  [
                       {
@@ -46,6 +47,10 @@
                                                          "study_id":  "STUDY_001",
                                                          "study_name":  "Phase 2 Trial",
                                                          "study_length_days":  360,
+                                                         "study_design":  "Population K-PD modelling of simulated Phase 2 dose-cohort data",
+                                                         "population":  "Patients with severe hypertriglyceridaemia (SHTG)",
+                                                         "primary_endpoint":  "% change in APOC3 and triglycerides from baseline across dose cohorts",
+                                                         "n_subjects_total":  3,
                                                          "study_data_source":  "https://www.certara.com/poster/population-k-pd-modeling-of-plozasiran-aro-apoc3-a-galnac-sirna-conjugate-for-the-treatment-of-patients-with-severe-hypertriglyceridemi/",
                                                          "arms":  [
                                                                       {
@@ -79,6 +84,10 @@
                                                          "study_id":  "STUDY_002",
                                                          "study_name":  "Phase 2b Trial SHASTA-2 Severe Hypertriglyceridemia",
                                                          "study_length_weeks":  48,
+                                                         "study_design":  "Randomised, double-blind, placebo-controlled Phase 2b trial (SHASTA-2)",
+                                                         "population":  "Adults with severe hypertriglyceridaemia (TG ≥ 500 mg/dL)",
+                                                         "primary_endpoint":  "% change in fasting triglycerides from baseline at Week 24",
+                                                         "n_subjects_total":  84,
                                                          "study_data_source":  "doi:10.1001/jamacardio.2024.0959",
                                                          "arms":  [
                                                                       {
@@ -107,6 +116,10 @@
                                                          "study_id":  "STUDY_003",
                                                          "study_name":  "Phase 3 Trials PALISADE Chylomicronemia and Pancreatitis Risk",
                                                          "study_length_weeks":  48,
+                                                         "study_design":  "Randomised, double-blind, placebo-controlled Phase 3 trial (PALISADE)",
+                                                         "population":  "Adults with familial chylomicronaemia syndrome (FCS)",
+                                                         "primary_endpoint":  "% change in fasting triglycerides from baseline at Week 24",
+                                                         "n_subjects_total":  75,
                                                          "study_data_source":  "DOI: 10.1056/NEJMoa2409368",
                                                          "arms":  [
                                                                       {

@@ -1,4 +1,4 @@
-{
+﻿{
     "model_information":  {
                               "filename":  "Eplontersen_PKPD_model.cpp",
                               "display_name":  "Eplontersen Population PKPD Model",
@@ -24,8 +24,9 @@
                               "therapeutic_area":  "Neurology",
                               "indication":  "Transthyretin (TTR) Amyloidosis",
                               "applications":  "Dose-selection, Treatment switching, clinical trial simulation, PKPD modeling, TTR lowering prediction, patient stratification",
-                              "modality_type":  "Biologic",
-                              "modality":  "Monoclonal Antibody"
+                              "modality_type":  "RNAi Therapeutic",
+                              "modality":  "ASO",
+                              "clinical_application":  "Predict TTR protein lowering with eplontersen across dose regimens to support dose selection, treatment switching decisions, and clinical trial design in TTR amyloidosis."
                           },
     "compounds":  [
                       {

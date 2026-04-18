@@ -1,4 +1,4 @@
-{
+﻿{
     "model_information":  {
                               "filename":  "Olezarsen_PKPD_model.cpp",
                               "display_name":  "Olezarsen PopPK-PD Model",
@@ -18,14 +18,15 @@
                               "input_label":  "Olezarsen",
                               "dose_unit":  "mg",
                               "model_dose_unit":  "mg",
-                              "output":  "DV_OLEZ, DV_APOC3, Cc_out, APOC3, APOC3_pct_change",
+                              "output":  "DV_Cc, DV_APOC3, Cc_out, APOC3, APOC3_pct_change",
                               "output_label":  "Predicted Olezarsen (ng/mL), Predicted APOC3 (mg/dL), Central Concentration (ng/mL), ApoC-III (mg/dL), % Change APOC3",
                               "source":  "https://www.accessdata.fda.gov/drugsatfda_docs/nda/2025/218614Orig1s000IntegratedR.pdf",
                               "therapeutic_area":  "Metabolic Disorders",
                               "indication":  "Familial Chylomicronemia Syndrome (FCS), Hypertriglyceridemia (HTG), Cardiovascular Disease (CVD)",
                               "applications":  "Dose-selection, clinical trial simulation, population PK-PD analysis, ADA impact assessment",
                               "modality_type":  "RNAi Therapeutic",
-                              "modality":  "ASO"
+                              "modality":  "ASO",
+                              "clinical_application":  "Predict ApoC-III lowering and drug exposure with olezarsen across dose regimens to support dose selection and clinical trial design in hypertriglyceridaemia and familial chylomicronemia syndrome, including assessment of anti-drug antibody impact on efficacy."
                           },
     "compounds":  [
                       {

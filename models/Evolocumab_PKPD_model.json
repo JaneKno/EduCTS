@@ -1,0 +1,148 @@
+﻿{
+    "model_information":  {
+                              "filename":  "Evolocumab_PKPD_model.cpp",
+                              "display_name":  "Evolocumab PK-PD Model",
+                              "description":  "Mechanistic PK-PD model describing the pharmacokinetics of evolocumab, it's binding to PCSK9 and downstream effects on LDL-C.",
+                              "compound_mode":  "single",
+                              "compound_interaction_description":  "None",
+                              "author":  "Jane Knochel",
+                              "date_created":  "2025-05-06",
+                              "date_last_updated":  "2026-04-16",
+                              "year":  2017,
+                              "model_type":  "PKPD",
+                              "model_file_type":  "mrgsolve",
+                              "validation_status":  "Validated",
+                              "compound":  "Evolocumab",
+                              "model_time_unit":  "days",
+                              "input":  "DEPOT",
+                              "input_label":  "subcutaneous injection",
+                              "dose_unit":  "mg",
+                              "model_dose_unit":  "nmol",
+                              "output":  "DV_FDC, DV_EVOL, DV_PCSK9, DV_PCSK9_free, DV_LDL, LDL",
+                              "output_label":  "Free drug concentration (ug/mL), Evolocumab concentration (ng/mL), total PCSK9 concentration (nM), free PCSK9 concentration (nM), Predicted LDL-C (mg/dL), LDL-C concentration (mg/dL)",
+                              "source":  " doi: 10.1002/jcph.840",
+                              "therapeutic_area":  "Cardiovascular",
+                              "indication":  "Hypercholesterolemia",
+                              "applications":  "Dose-selection, clinical trial simulation, biomarker modeling",
+                              "modality_type":  "Biologic",
+                              "modality":  "Monoclonal Antibody",
+                              "clinical_application":  "Predict PCSK9 suppression and LDL-C lowering with evolocumab to support dose selection and clinical trial simulation in hypercholesterolaemia."
+                          },
+    "compounds":  [
+                      {
+                          "compound_id":  1,
+                          "compound_name":  "Evolocumab",
+                          "abbreviation":  "EVOL",
+                          "is_required":  true,
+                          "role_in_model":  "Monoclonal antibody PCSK9 inhibitor for lipid management",
+                          "interaction_with":  [
+
+                                               ],
+                          "molecular_weight_Da":  144000,
+                          "therapeutic_dose":  "420",
+                          "therapeutic_frequency":  "Monthly",
+                          "route_of_administration":  "Subcutaneous"
+                      }
+                  ],
+    "internal_validation_data":  {
+                                     "studies":  [{
+                                                         "study_id":  "STUDY_001",
+                                                         "study_name":  "Model Simulation Study",
+                                                         "study_length_days":  84,
+                                                         "study_data_source":  "https://doi.org/10.1002/jcph.840",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "140 mg Q2W",
+                                                                          "dose":  140,
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Gibbs2017/Gibbs2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "280 mg Q4W",
+                                                                          "dose":  280,
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Gibbs2017/Gibbs2017.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "420 mg Q4W",
+                                                                          "dose":  420,
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Gibbs2017/Gibbs2017.csv"
+                                                                      }
+                                                                  ]
+                                                     },
+                                                        {
+                                                         "study_id":  "STUDY_002",
+                                                         "study_name":  "Phase 1 Trial",
+                                                         "study_length_days":  84,
+                                                         "study_data_source":  "https://doi.org/10.1016/j.jacc.2012.08.986",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "Placebo SD",
+                                                                          "dose":  0,
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Dias2012/Dias2012.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "7 mg SD",
+                                                                          "dose":  7,
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Dias2012/Dias2012.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "21 mg SD",
+                                                                          "dose":  21,
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Dias2012/Dias2012.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "70 mg SD",
+                                                                          "dose":  70,
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Dias2012/Dias2012.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "210 mg SD",
+                                                                          "dose":  210,
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Dias2012/Dias2012.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "420 mg SD",
+                                                                          "dose":  420,
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Dias2012/Dias2012.csv"
+                                                                      }
+                                                                  ]
+                                                     }
+                                                 ]
+                                 },
+    "external_validation_data":  {
+                                     "studies":  [{
+                                                         "study_id":  "STUDY_003",
+                                                         "study_name":  "RUTHERFORD-2 Phase 3 Trial",
+                                                         "study_length_days":  84,
+                                                         "study_data_source":  "https://doi.org/10.1016/s0140-6736(14)61399-4",
+                                                         "arms":  [
+                                                                      {
+                                                                          "arm_name":  "Placebo Q4W",
+                                                                          "dose":  0,
+                                                                          "frequency": "Every 4 weeks",
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Raal2015/Raal2015.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "Placebo Q2W",
+                                                                          "dose":  0,
+                                                                          "frequency": "Every 2 weeks",
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Raal2015/Raal2015.csv"
+                                                                      },
+                                                                      {
+                                                                          "arm_name":  "140 mg Q2W",
+                                                                          "dose":  140,
+                                                                          "frequency": "Every 2 weeks",
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Raal2015/Raal2015.csv"
+                                                                      },
+                                                                      
+                                                                      {
+                                                                          "arm_name":  "420 mg Q4W",
+                                                                          "dose":  420,
+                                                                          "frequency": "Every 4 weeks",
+                                                                          "data_location":  "data/source/Evolocumab_PKPD_model/Raal2015/Raal2015.csv"
+                                                                      }
+                                                                  ]
+                                                     }
+
+                                                 ]
+                                 }
+}

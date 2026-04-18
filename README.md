@@ -81,15 +81,16 @@ Start your exploration with clinical questions relevant to your work:
 #### Metabolic/Cardiovascular Focus
 - **Olezarsen**: ApoC-III lowering agent for familial chylomicronemia syndrome (FCS), hypertriglyceridemia (HTG), cardiovascular disease
 - **Plozasiran**: GalNAc-conjugated ASO for lipoprotein(a) reduction
+- **Evolocumab**: PCSK9 inhibitor for hypercholesterolemia and cardiovascular disease
+- **Inclisiran**: PCSK9 inhibitor for hypercholesterolemia
 - **ASO Generic PK Model**: Template model for general antisense drug development
 
-#### Additional Models
-- Eplontersen (Hereditary ATTR amyloidosis)
-- Fitusiran (Rare bleeding disorders)
-- Inclisiran (Hypercholesterolemia)
-- Inotersen (Amyloid polyneuropathy)
-- Nusinersen (Spinal muscular atrophy)
-- Patisiran (Hereditary ATTR amyloidosis)
+#### Other Therapeutic Areas
+- **Eplontersen**: Hereditary ATTR amyloidosis
+- **Fitusiran**: Rare bleeding disorders
+- **Inotersen**: Amyloid polyneuropathy
+- **Nusinersen**: Spinal muscular atrophy
+- **Patisiran**: Hereditary ATTR amyloidosis
 
 ### Clinical Trial Data
 

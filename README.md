@@ -6,6 +6,7 @@ A comprehensive platform for exploring validated pharmacokinetic-pharmacodynamic
 
 EduCTS is designed as an educational tool to understand what role model-informed drug development plays for clinical study design. It includes:
 
+- **Question-First Workflow**: Start with clinical questions relevant to your work, then optionally explore underlying models
 - **Interactive Model Library**: Browse and filter a collection of PK and PKPD models
 - **Clinical Trial Simulation**: Conduct simulations using validated models with clinical trial data
 - **Model Validation**: Access to historical clinical study data and model validation results
@@ -57,7 +58,14 @@ EduCTS/
 
 ## Key Features
 
-### Model Library
+### Question-First Workflow
+Start your exploration with clinical questions relevant to your work:
+- **Browse Questions**: Navigate by therapeutic area, drug class, or clinical context
+- **Explore Models**: Dive into specific models for deeper understanding when needed
+- **Seamless Integration**: Transition smoothly between clinical questions and technical details
+- **No Model Background Required**: Accessible to clinicians, students, and researchers new to pharmacokinetics
+
+### Interactive Model Library
 - **Browsable Catalog**: Explore models with filtering by:
   - Model type (PK, PKPD, KPD)
   - File type (mrgsolve format)
@@ -65,7 +73,8 @@ EduCTS/
   - Publication year
   - Validation status
 - **Detailed Model Information**: View descriptions, authors, parameters, and applications
-- **Direct Access**: Quick links to model equations (C++ files) 
+- **Direct Access**: Quick links to model equations (C++ files)
+- **Question Context**: Use the Question-First tab for clinical context before diving into models 
 
 ### Supported Compounds & Indications
 
@@ -108,6 +117,7 @@ The project includes validation datasets from:
 ### Theming & UX
 - **shinythemes**: Bootstrap theme support (Flatly theme)
 - **shinyjs**: JavaScript interactivity
+- **googlesheets4**: Integration for data collection and feedback
 
 ## Getting Started
 
@@ -118,7 +128,7 @@ The project includes validation datasets from:
 2. **Install required packages**:
    ```r
    install.packages(c("shiny", "jsonlite", "mrgsolve", "DT", "ggplot2", 
-                      "plotly", "shinythemes", "shinyjs"))
+                      "plotly", "shinythemes", "shinyjs", "googlesheets4"))
    ```
 
 3. **Clone the repository**:
@@ -140,6 +150,8 @@ The project includes validation datasets from:
    ```
 
 3. **Access the application**: Open your browser to the displayed local address (typically `http://localhost:3838`)
+
+**Getting Started with the App**: The application launches with a Question-First tab for intuitive exploration. First-time users can start with clinical questions or browse the Model Library directly based on their preference.
 
 Alternatively, run directly from command line:
 ```bash
@@ -199,13 +211,25 @@ Browse validation results in the application's Model Details view.
 
 ## Workflow
 
-### For Researchers/Modelers
+### New: Start with Clinical Questions
+1. **Question-First Tab**: Launch the app and browse clinical questions by therapeutic area
+2. **Find Relevant Models**: Discover models that address your specific question
+3. **Explore When Ready**: Dive into model details, validation data, and technical parameters as needed
+4. **No Model Background Required**: Clinical context provided for all questions
+
+### For Researchers/Clinicians with Clinical Questions
+1. **Ask**: Use the Question-First tab to find models addressing your clinical question
+2. **Understand**: Review model context and how it relates to clinical practice
+3. **Explore**: Compare models or dive deeper into pharmacokinetics/pharmacodynamics
+4. **Apply**: Use validated models to inform decision-making
+
+### For Modelers Exploring Model Validation
 1. **Explore**: Use the Model Library to browse available models
 2. **Evaluate**: Review validation against clinical data
 3. **Adapt**: Export models and modify for your population/compound
 
 ### For Clinical Trial Planning
-1. **Select**: Choose an appropriate model from the library
+1. **Select**: Choose an appropriate model from the library or question context
 2. **Simulate**: Use the CTS application to simulate multiple scenarios
 3. **Design**: Evaluate dose regimens, sample timing, and statistical power
 4. **Plan**: Inform study design and population selection
@@ -248,9 +272,25 @@ The application includes embedded descriptions of:
 
 For questions, issues, or contributions, please refer to project documentation or contact the development team.
 
+## UI & User Experience
+
+- **Full-Width Content Views**: Model details, documentation, and evidence tabs offer focused, distraction-free reading
+- **Responsive Sidebar**: Intelligently adapts based on content type and user goals
+- **Multiple Entry Points**: Question-first workflow or traditional model-first exploration
+- **Optimized Performance**: Production-ready codebase with streamlined user interactions
+
 ## Changelog
 
-### Version 0.1 (Current)
+### Version 1.0 (Current)
+- **Question-First Workflow**: New primary entry point for users starting with clinical questions
+- **Enhanced Navigation**: Intuitive pathways from questions to model exploration
+- **UI/UX Improvements**: Full-width content views, responsive sidebar, optimized layout
+- **Production-Ready**: Comprehensive model library with 8+ major ASO therapeutic models
+- **Interactive Shiny-Based Interface**: Support for PK, PKPD, and KPD model types
+- **Clinical Trial Validation**: Extensive datasets from Phase 1, 2, and 3 studies
+- **Performance Optimization**: Streamlined user tracking and interaction logging
+
+### Version 0.1 (Archived)
 - Initial comprehensive model library with 8+ major ASO therapeutic models
 - Interactive Shiny-based model exploration interface
 - Support for PK, PKPD, and KPD model types
@@ -259,5 +299,5 @@ For questions, issues, or contributions, please refer to project documentation o
 
 ---
 
-**Last Updated**: February 2026  
+**Last Updated**: April 2026  
 **Project Repository**: [GitHub - JaneKno/EduCTS](https://github.com/JaneKno/EduCTS)

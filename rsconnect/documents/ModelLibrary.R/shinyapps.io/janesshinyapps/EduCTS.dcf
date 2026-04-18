@@ -5,9 +5,8 @@ account: janesshinyapps
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 16701982
-bundleId: 11870930
+bundleId: 11870996
 url: https://janesshinyapps.shinyapps.io/EduCTS/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: midd.pdf

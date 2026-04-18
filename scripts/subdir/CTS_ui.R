@@ -616,6 +616,140 @@ ui <- fluidPage(
               )
             )
           )
+        ),
+        
+        # ============================================================================
+        # TAB 4: FEEDBACK
+        # ============================================================================
+        tabPanel(
+          "Feedback",
+          value = "cts_feedback_tab",
+          div(style = "max-width: 900px; margin: 0 auto; padding: 20px;",
+            tags$h3("Help Us Improve EduCTS",
+              style = "color: #1e293b; font-weight: 700; margin: 20px 0 12px 0;"),
+            tags$p(
+              "Your feedback is valuable and helps us improve the simulator. This survey takes about 5-10 minutes.",
+              style = "color: #64748b; font-size: 0.95em; margin-bottom: 20px; line-height: 1.6;"
+            ),
+            
+            # Feedback form container
+            div(id = "feedback_form",
+              # Optional metadata
+              div(style = "background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 20px;",
+                selectInput("fb_user_role", "Your role (optional):",
+                  choices = c("Select..." = "", 
+                              "Clinician/Physician" = "Clinician",
+                              "Pharmacokineticist/Modeler" = "Modeler",
+                              "Student" = "Student",
+                              "Researcher" = "Researcher",
+                              "Other" = "Other"),
+                  selected = "")
+              ),
+              
+              # SECTION 1: Workflow & Navigation
+              div(style = "background: #fff1f2; border-left: 4px solid #ec4899; border-radius: 8px; padding: 16px; margin-bottom: 20px;",
+                tags$h4("1. Workflow & Navigation", style = "margin: 0 0 14px 0; color: #1e293b;"),
+                tags$p("How intuitive did you find the overall simulator workflow?", style = "margin: 0 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q1_intuitive", "Not intuitive (1) → Very intuitive (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%"),
+                textAreaInput("fb_q1_comments", "Comments or suggestions:", rows = 2, placeholder = "Optional"),
+                
+                tags$p("How easy was it to follow the logical flow from trial design to results?", 
+                  style = "margin: 12px 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q2_flow", "Difficult (1) → Very easy (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%"),
+                textAreaInput("fb_q2_comments", "What could be clearer?", rows = 2, placeholder = "Optional")
+              ),
+              
+              # SECTION 2: Question-First Workflow
+              div(style = "background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 8px; padding: 16px; margin-bottom: 20px;",
+                tags$h4("2. Question-First Workflow", style = "margin: 0 0 14px 0; color: #1e293b;"),
+                tags$p("If you used the question-based entry workflow, how helpful was it?", style = "margin: 0 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q3_helpful", "Not helpful (1) → Very helpful (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%"),
+                textAreaInput("fb_q3_comments", "What was helpful or missing?", rows = 2, placeholder = "Optional"),
+                
+                tags$p("Did the suggested trial settings guide your decisions effectively?", style = "margin: 12px 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q4_guide", "No guidance (1) → Excellent guidance (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%")
+              ),
+              
+              # SECTION 3: Trial Design Configuration
+              div(style = "background: #dbeafe; border-left: 4px solid #0284c7; border-radius: 8px; padding: 16px; margin-bottom: 20px;",
+                tags$h4("3. Trial Design Configuration", style = "margin: 0 0 14px 0; color: #1e293b;"),
+                tags$p("How clear was the trial design sidebar (treatment groups, dosing, etc.)?", style = "margin: 0 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q5_design_clear", "Very confusing (1) → Crystal clear (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%"),
+                textAreaInput("fb_q5_comments", "What was confusing?", rows = 2, placeholder = "Optional"),
+                
+                tags$p("What features or options were missing from trial configuration?", style = "margin: 12px 0 8px 0; font-weight: 500;"),
+                textAreaInput("fb_q6_missing", "Feature requests:", rows = 2, placeholder = "E.g., support for dropout rates, dose adjustments, etc.")
+              ),
+              
+              # SECTION 4: Results & Visualization
+              div(style = "background: #dcfce7; border-left: 4px solid #22c55e; border-radius: 8px; padding: 16px; margin-bottom: 20px;",
+                tags$h4("4. Results & Visualization", style = "margin: 0 0 14px 0; color: #1e293b;"),
+                tags$p("How clear were the plots and visual representations of results?", style = "margin: 0 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q7_plots_clear", "Hard to read (1) → Very clear (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%"),
+                textAreaInput("fb_q7_comments", "Visualization feedback:", rows = 2, placeholder = "Optional"),
+                
+                tags$p("How easy was it to interpret what the results mean?", style = "margin: 12px 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q8_interpret", "Unclear (1) → Very clear (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%"),
+                textAreaInput("fb_q8_comments", "What needed better explanation?", rows = 2, placeholder = "Optional"),
+                
+                tags$p("How confident are you in the simulation results?", style = "margin: 12px 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q9_confidence", "Not confident (1) → Very confident (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%")
+              ),
+              
+              # SECTION 5: Model Evidence
+              div(style = "background: #ede9fe; border-left: 4px solid #a855f7; border-radius: 8px; padding: 16px; margin-bottom: 20px;",
+                tags$h4("5. Model Evidence & Validation", style = "margin: 0 0 14px 0; color: #1e293b;"),
+                tags$p("How compelling was the model validation evidence (plots vs. observed data)?", style = "margin: 0 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q10_validation", "Not compelling (1) → Very compelling (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%"),
+                textAreaInput("fb_q10_comments", "What would strengthen the evidence?", rows = 2, placeholder = "Optional")
+              ),
+              
+              # SECTION 6: Help & Documentation
+              div(style = "background: #fce7f3; border-left: 4px solid #db2777; border-radius: 8px; padding: 16px; margin-bottom: 20px;",
+                tags$h4("6. Help & Documentation", style = "margin: 0 0 14px 0; color: #1e293b;"),
+                tags$p("How useful was the Help & Guide section?", style = "margin: 0 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q11_help_useful", "Not useful (1) → Very useful (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%"),
+                textAreaInput("fb_q11_comments", "Did you find information easily?", rows = 2, placeholder = "Optional"),
+                
+                tags$p("How well did explanations match your knowledge level?", style = "margin: 12px 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q12_explanations", "Too simple (1) ← → Too technical (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%")
+              ),
+              
+              # SECTION 7: Overall Experience
+              div(style = "background: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 8px; padding: 16px; margin-bottom: 20px;",
+                tags$h4("7. Overall Experience", style = "margin: 0 0 14px 0; color: #1e293b;"),
+                tags$p("Would you use EduCTS for your own work (or recommend to colleagues)?", style = "margin: 0 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q13_again", "No (1) → Definitely yes (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%"),
+                
+                tags$p("How likely are you to recommend EduCTS to colleagues?", style = "margin: 12px 0 8px 0; font-weight: 500;"),
+                sliderInput("fb_q14_recommend", "Very unlikely (1) → Very likely (5):",
+                  min = 1, max = 5, value = 3, step = 1, width = "100%"),
+                
+                tags$p("What features would make EduCTS more useful for your needs?", style = "margin: 12px 0 8px 0; font-weight: 500;"),
+                textAreaInput("fb_q15_features", "Feature requests and improvement ideas:", rows = 3, placeholder = "E.g., support for more models, advanced analyses, export options, etc.")
+              ),
+              
+              # Submit button
+              div(style = "text-align: center; margin-top: 24px;",
+                actionButton("submit_feedback", "Submit Feedback",
+                  class = "btn btn-primary",
+                  icon = icon("paper-plane"),
+                  style = "width: 200px; padding: 10px 20px; font-size: 1.05em; font-weight: 600;")
+              )
+            )
+          )
         )
       )
     )

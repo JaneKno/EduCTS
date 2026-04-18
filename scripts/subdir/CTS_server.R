@@ -50,6 +50,21 @@ sheets_cache_download <- function(safe_name, tab_name) {
 }
 # =======================================================
 
+# ========== FEEDBACK COLLECTION SHEET ==========
+FEEDBACK_SHEET_ID <- "1VUFjkXOSfjfcaCHAbahs0oNXywzNy7okuj9_jf6AQng"
+
+feedback_sheet_upload <- function(feedback_df) {
+  tryCatch({
+    googlesheets4::sheet_append(feedback_df, ss = FEEDBACK_SHEET_ID, sheet = 1)
+    cat("Feedback saved successfully\n")
+    return(TRUE)
+  }, error = function(e) {
+    cat("Error saving feedback:", as.character(e), "\n")
+    return(FALSE)
+  })
+}
+# ====================================================
+
 # Modify the main function
 generate_input_dataset <- function(treatment_groups, study_length_weeks, design = "parallel", washout_weeks = 4, model_time_unit, input_compartment = "DEPOT", dose_unit = "mg", model_dose_unit = "mg", molecular_weight_Da = NULL) {
     # Validate input columns and design parameter
@@ -780,6 +795,9 @@ time_conversion <- switch(
 
   # Reactive value to store combined treatment switch results for custom mapping
   treatment_switch_combined <- reactiveVal(NULL)
+  
+  # Reactive value for feedback submission status
+  feedback_submitted <- reactiveVal(FALSE)
   
   # Reactive value to store the number of treatment groups
   treatment_groups <- reactiveValues()
@@ -5277,4 +5295,103 @@ output$sim_result <- renderUI({
       shinyjs::addClass(id = "cts_main_col", class = "full-width")
     }
   })
+  
+  # ========== FEEDBACK SUBMISSION ==========
+  collect_feedback_response <- function(input) {
+    data.frame(
+      timestamp = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
+      user_role = input$fb_user_role %||% "Not answered",
+      
+      # Section 1: Workflow & Navigation
+      q1_intuitive = input$fb_q1_intuitive %||% NA,
+      q1_comments = input$fb_q1_comments %||% "",
+      q2_flow = input$fb_q2_flow %||% NA,
+      q2_comments = input$fb_q2_comments %||% "",
+      
+      # Section 2: Question-First Workflow
+      q3_helpful = input$fb_q3_helpful %||% NA,
+      q3_comments = input$fb_q3_comments %||% "",
+      q4_guide = input$fb_q4_guide %||% NA,
+      
+      # Section 3: Trial Design
+      q5_design_clear = input$fb_q5_design_clear %||% NA,
+      q5_comments = input$fb_q5_comments %||% "",
+      q6_missing = input$fb_q6_missing %||% "",
+      
+      # Section 4: Results & Visualization
+      q7_plots_clear = input$fb_q7_plots_clear %||% NA,
+      q7_comments = input$fb_q7_comments %||% "",
+      q8_interpret = input$fb_q8_interpret %||% NA,
+      q8_comments = input$fb_q8_comments %||% "",
+      q9_confidence = input$fb_q9_confidence %||% NA,
+      
+      # Section 5: Model Evidence
+      q10_validation = input$fb_q10_validation %||% NA,
+      q10_comments = input$fb_q10_comments %||% "",
+      
+      # Section 6: Help & Documentation
+      q11_help_useful = input$fb_q11_help_useful %||% NA,
+      q11_comments = input$fb_q11_comments %||% "",
+      q12_explanations = input$fb_q12_explanations %||% NA,
+      
+      # Section 7: Overall Experience
+      q13_again = input$fb_q13_again %||% NA,
+      q14_recommend = input$fb_q14_recommend %||% NA,
+      q15_features = input$fb_q15_features %||% "",
+      
+      stringsAsFactors = FALSE
+    )
+  }
+  
+  observeEvent(input$submit_feedback, {
+    # Collect feedback data
+    fb_data <- collect_feedback_response(input)
+    
+    # Validate: require at least one substantive response
+    has_response <- (
+      !is.na(fb_data$q1_intuitive) ||
+      !is.na(fb_data$q2_flow) ||
+      !is.na(fb_data$q3_helpful) ||
+      nchar(fb_data$q1_comments) > 0 ||
+      nchar(fb_data$q2_comments) > 0 ||
+      nchar(fb_data$q5_comments) > 0 ||
+      nchar(fb_data$q6_missing) > 0 ||
+      nchar(fb_data$q7_comments) > 0 ||
+      nchar(fb_data$q15_features) > 0
+    )
+    
+    if (!has_response) {
+      shinyalert::shinyalert(
+        title = "Feedback Required",
+        text = "Please provide at least one response (rating or comment) before submitting.",
+        type = "warning"
+      )
+      return()
+    }
+    
+    # Upload to Google Sheets
+    success <- feedback_sheet_upload(fb_data)
+    
+    if (success) {
+      shinyalert::shinyalert(
+        title = "Thank You!",
+        text = "Your feedback has been saved successfully.",
+        type = "success"
+      )
+      feedback_submitted(TRUE)
+      
+      # Reset form after 1.5 seconds
+      shinyjs::delay(1500, {
+        shinyjs::reset("feedback_form")
+        feedback_submitted(FALSE)
+      })
+    } else {
+      shinyalert::shinyalert(
+        title = "Error",
+        text = "Could not save feedback. Please check your internet connection and try again.",
+        type = "error"
+      )
+    }
+  })
+  # ===================================================
 }

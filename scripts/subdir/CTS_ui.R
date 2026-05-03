@@ -177,10 +177,6 @@ ui <- fluidPage(
       )
     ),
     div(style = "display:flex; gap:8px; align-self:center;",
-      actionButton("toggle_sidebar", icon("sliders"),
-        class = "btn btn-sm",
-        title = "Toggle parameters panel",
-        style = "background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.25); border-radius: 6px; padding: 5px 10px; margin: 0;"),
       actionButton("back_from_cts", "\u2190 Model Library",
         class = "btn btn-sm",
         style = "background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.25); border-radius: 6px; font-weight: 500; font-size: 0.83em; padding: 5px 12px; margin: 0;")
@@ -282,8 +278,14 @@ ui <- fluidPage(
         id = "cts_main_tabset",
         tabPanel(
           "Virtual Trial Results",
-          tags$h3("Simulation Results",
-            style = "color: #1e293b; font-weight: 700; margin: 20px 0 12px 0;"),
+          div(
+            style = "display: flex; align-items: center; justify-content: space-between; margin: 20px 0 12px 0;",
+            tags$h3("Simulation Results", style = "color: #1e293b; font-weight: 700; margin: 0;"),
+            actionButton("toggle_sidebar", tagList(icon("sliders"), " Parameters"),
+              class = "btn btn-sm btn-default",
+              title = "Toggle parameters panel",
+              style = "font-size: 0.83em; font-weight: 500;")
+          ),
           tags$div(
             style = paste0(
               "background: #fffbeb; border: 1px solid #fcd34d; border-left: 4px solid #f59e0b; ",

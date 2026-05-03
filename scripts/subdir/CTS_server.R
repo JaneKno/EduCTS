@@ -792,6 +792,22 @@ time_conversion <- switch(
   shared_vars_list <- reactiveVal(NULL)
   # Clinical question type from question-first workflow — read cts_mode written by ModelLibrary.R
   question_type <- reactiveVal(if (!is.null(trial_presets$cts_mode)) trial_presets$cts_mode else "")
+  # Sidebar visibility state — initially hidden if auto_run (dose-response/comparison modes)
+  sidebar_visible <- reactiveVal(!isTRUE(trial_presets$auto_run))
+
+  # ========== Ensure sidebar starts in the correct initial state ==========
+  session$onFlushed(function() {
+    if (isTRUE(trial_presets$auto_run)) {
+      # Hide sidebar and expand main content
+      shinyjs::addClass("cts_sidebar_col", "sidebar-hidden")
+      shinyjs::addClass("cts_main_col", "expanded")
+    } else {
+      # Show sidebar and keep main content normal
+      shinyjs::removeClass("cts_sidebar_col", "sidebar-hidden")
+      shinyjs::removeClass("cts_main_col", "expanded")
+    }
+  }, once = TRUE)
+  # ========================================================================
 
   # Reactive value to store combined treatment switch results for custom mapping
   treatment_switch_combined <- reactiveVal(NULL)
@@ -859,6 +875,9 @@ time_conversion <- switch(
 
   # Generate dosing UI based on trial design
   output$dosing_ui <- renderUI({
+    # Depend on sidebar visibility so toggling sidebar re-renders this output
+    sidebar_visible()
+    
     if (is.null(input$trial_design)) return(NULL)
     if (input$trial_design == "parallel") {
       # Parallel design: Single group
@@ -1001,7 +1020,6 @@ time_conversion <- switch(
       )
     }
   })
-  outputOptions(output, "dosing_ui", suspendWhenHidden = FALSE)
   
   output$model_info <- renderText({
     if (n_models == 1) {
@@ -3974,17 +3992,19 @@ output$sim_result <- renderUI({
 
   # Toggle sidebar parameters panel
   observeEvent(input$toggle_sidebar, {
-    shinyjs::runjs("
-      var sb   = document.getElementById('cts_sidebar_col');
-      var main = document.getElementById('cts_main_col');
-      if (sb.classList.contains('sidebar-hidden')) {
-        sb.classList.remove('sidebar-hidden');
-        main.classList.remove('expanded');
-      } else {
-        sb.classList.add('sidebar-hidden');
-        main.classList.add('expanded');
-      }
-    ")
+    current_state <- sidebar_visible()
+    sidebar_visible(!current_state)
+    
+    if (!current_state) {
+      # Show sidebar - remove BOTH full-width classes (set by tab observer or auto_run)
+      shinyjs::removeClass("cts_sidebar_col", "sidebar-hidden")
+      shinyjs::removeClass("cts_main_col", "expanded")
+      shinyjs::removeClass("cts_main_col", "full-width")
+    } else {
+      # Hide sidebar - add hidden class
+      shinyjs::addClass("cts_sidebar_col", "sidebar-hidden")
+      shinyjs::addClass("cts_main_col", "expanded")
+    }
   })
 
   # Display summarized results in a table - also reactive to time_unit changes
@@ -4737,8 +4757,10 @@ output$sim_result <- renderUI({
           observed_data <- NULL
           observed_transformation <- NULL
           
-          label_df <- data.frame(variable =meta$output_var,label=meta$output_label)
-          summaries <- left_join(summaries, label_df)
+          if (!"label" %in% names(summaries) && "variable" %in% names(summaries)) {
+            label_df <- data.frame(variable = meta$output_var, label = meta$output_label)
+            summaries <- left_join(summaries, label_df, by = "variable")
+          }
           
           if (!is.null(data_location) && data_location != "") {
             data_path <- file.path(".", data_location)
@@ -5285,16 +5307,19 @@ output$sim_result <- renderUI({
   observeEvent(input$cts_main_tabset, {
     current_tab <- input$cts_main_tabset
     
-    # Show sidebar only for "Virtual Trial Results" tab
+    # Show sidebar only for "Virtual Trial Results" tab, and only if user hasn't hidden it
     if (current_tab == "Virtual Trial Results") {
-      shinyjs::removeClass(id = "cts_sidebar_col", class = "sidebar-hidden")
-      shinyjs::removeClass(id = "cts_main_col", class = "full-width")
+      if (sidebar_visible()) {
+        shinyjs::removeClass(id = "cts_sidebar_col", class = "sidebar-hidden")
+        shinyjs::removeClass(id = "cts_main_col", class = "full-width")
+        shinyjs::removeClass(id = "cts_main_col", class = "expanded")
+      }
     } else {
       # Hide sidebar for "Help & Guide", "Model Evidence", or any other tab
       shinyjs::addClass(id = "cts_sidebar_col", class = "sidebar-hidden")
       shinyjs::addClass(id = "cts_main_col", class = "full-width")
     }
-  })
+  }, ignoreInit = TRUE)
   
   # ========== FEEDBACK SUBMISSION ==========
   collect_feedback_response <- function(input) {

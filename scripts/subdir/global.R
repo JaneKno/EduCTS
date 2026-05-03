@@ -1,10 +1,10 @@
-model_filenames <- c("Olezarsen_PKPD_model.cpp", "Plozasiran_KPD_model.cpp")
+model_filenames <- c("Plozasiran_KPD_model.cpp")
 trial_presets <- list(
   trial_design = "parallel",
-  n_arms = 2,
+  n_arms = 3,
   enable_switch = FALSE,
-  suggested_weeks = 52,
-  question_title = "How do two compounds compare head-to-head in efficacy?",
+  suggested_weeks = 24,
+  question_title = "What is the minimum effective dose?",
   auto_run = TRUE,
-  cts_mode = "comparison"
+  cts_mode = "dose_response"
 )

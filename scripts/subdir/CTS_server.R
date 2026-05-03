@@ -867,30 +867,38 @@ time_conversion <- switch(
   # ============================================================================
 
   model_path <- file.path(models_dir, model_filenames[1])
-  
-  # Display model information
-  output$model_info <- renderText({
-    paste("Simulating model:", model_filenames[1])
-  })
 
   # Generate dosing UI based on trial design
   output$dosing_ui <- renderUI({
-    # Depend on sidebar visibility so toggling sidebar re-renders this output
-    sidebar_visible()
-    
-    if (is.null(input$trial_design)) return(NULL)
-    if (input$trial_design == "parallel") {
+    cat("\n===== DOSING UI RENDER =====\n")
+    cat("trial_design input:", as.character(input$trial_design), "\n")
+    cat("n_models:", n_models, "\n")
+
+    trial_design_val <- if (!is.null(input$trial_design)) input$trial_design else
+      if (!is.null(trial_presets$trial_design)) trial_presets$trial_design else "parallel"
+    cat("trial_design_val:", trial_design_val, "\n")
+
+    if (trial_design_val == "parallel") {
       # Parallel design: Single group
       tagList(
         lapply(seq_len(n_models), function(model_idx) {
         meta <- models_metadata[[model_idx]]
         model_name <- tools::file_path_sans_ext(basename(meta$filename))
-        
-        tagList(
+
+        count_raw <- tryCatch(
+          treatment_groups[[paste0("model_", model_idx, "_count")]],
+          error = function(e) { cat("ERROR reading count:", e$message, "\n"); NULL }
+        )
+        cat("model_idx:", model_idx, "| count_raw:", as.character(count_raw), "\n")
+
+        {
+          n_grps_now <- if (is.null(count_raw) || count_raw < 1L) initial_arm_count else as.integer(count_raw)
+          cat("n_grps_now:", n_grps_now, "\n")
+          tagList(
           tags$h4(paste("Dosing for Model:", model_name)),
           
           # Treatment groups for this model
-          lapply(1:treatment_groups[[paste0("model_", model_idx, "_count")]], function(i) {
+          lapply(seq_len(n_grps_now), function(i) {
             tagList(
               tags$h5(paste("Treatment Group", i)),
               textInput(paste0("m", model_idx, "_group_name_", i), "Group Name", 
@@ -909,7 +917,7 @@ time_conversion <- switch(
                   as.numeric(meta$therapeutic_dose) else 10
 
                 # For dose-response mode: assign log-spaced dose per group (same formula as run_sim)
-                n_grps <- treatment_groups[[paste0("model_", model_idx, "_count")]]
+                n_grps <- n_grps_now
                 default_dose <- if (isTRUE(trial_presets$cts_mode == "dose_response") && n_grps > 1) {
                   dose_levels <- round(exp(seq(log(base_dose * 0.25), log(base_dose * 4), length.out = n_grps)), 4)
                   dose_levels[i]
@@ -959,7 +967,7 @@ time_conversion <- switch(
           ),
           tags$hr()
         )
-      })
+      }})
     )
       # # Generate UI for each treatment group
       # lapply(1:treatment_groups$count, function(i) {
@@ -995,7 +1003,7 @@ time_conversion <- switch(
       # actionButton("add_group", "Add Treatment Group", class = "btn btn-success"),
       # actionButton("remove_group", "Remove Treatment Group", class = "btn btn-danger")
       # )
-    } else if (input$trial_design == "cross-over") {
+    } else if (trial_design_val == "cross-over") {
       # Cross-over design: Multiple periods
       tagList(
         tags$h4("Dosing Information"),
@@ -1006,7 +1014,7 @@ time_conversion <- switch(
         numericInput("washout_weeks", "Washout Period (weeks)", value = 4, min = 0),
         selectInput("frequency", "Frequency", choices = c("single_dose", "Twice daily", "Daily", "Weekly", "Biweekly", "Every 2 weeks", "Every 4 weeks", "Monthly", "Once every 3 months", "Once every 4 months", "Once every 6 months", "Every 8 weeks"), selected = "Weekly")
       )
-    } else if (input$trial_design == "factorial") {
+    } else if (trial_design_val == "factorial") {
       # Factorial design: Multiple treatments
       tagList(
         tags$h4("Dosing Information"),
@@ -1029,6 +1037,12 @@ time_conversion <- switch(
             paste(model_filenames, collapse = ", "))
     }
   })
+
+  # Prevent Shiny from suspending these outputs when the sidebar is hidden
+  # (sidebar starts hidden in auto_run/comparison mode, so without this they never render)
+  outputOptions(output, "dosing_ui",  suspendWhenHidden = FALSE)
+  outputOptions(output, "model_info", suspendWhenHidden = FALSE)
+
 # Dynamically create observers for add/remove buttons for each model
 observe({
   lapply(seq_len(n_models), function(model_idx) {
@@ -4000,6 +4014,8 @@ output$sim_result <- renderUI({
       shinyjs::removeClass("cts_sidebar_col", "sidebar-hidden")
       shinyjs::removeClass("cts_main_col", "expanded")
       shinyjs::removeClass("cts_main_col", "full-width")
+      # Trigger layout/widget refresh for any deferred Bootstrap/selectize init
+      shinyjs::runjs("setTimeout(function(){$(window).trigger('resize');}, 50);")
     } else {
       # Hide sidebar - add hidden class
       shinyjs::addClass("cts_sidebar_col", "sidebar-hidden")
@@ -4757,8 +4773,8 @@ output$sim_result <- renderUI({
           observed_data <- NULL
           observed_transformation <- NULL
           
+          label_df <- data.frame(variable = meta$output_var, label = meta$output_label)
           if (!"label" %in% names(summaries) && "variable" %in% names(summaries)) {
-            label_df <- data.frame(variable = meta$output_var, label = meta$output_label)
             summaries <- left_join(summaries, label_df, by = "variable")
           }
           

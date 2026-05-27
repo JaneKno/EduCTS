@@ -14,3 +14,4 @@ data/validation/
 # Local development
 .DS_Store
 Thumbs.db
+.positai

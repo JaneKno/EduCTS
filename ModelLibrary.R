@@ -822,7 +822,7 @@ ui1 <- fluidPage(
   tags$hr(),
   div(
     style = "text-align: center; color: #999; font-size: 0.85em; padding: 15px; margin-top: 20px;",
-    HTML("Creator: Jane Kn\u00f6chel | Last Updated: 2026-05-03 | v1.1")
+    HTML("Creator: Jane Kn\u00f6chel | Last Updated: 2026-05-03 | v1.2")
   )
 )
 

@@ -20,7 +20,7 @@
                               "model_dose_unit":  "ug",
                               "output":  "CONC_CSF, CONC_PLASMA, CONC_CERV, CONC_BRAIN, CONC_LUM, CONC_THO, CONC_PONS",
                               "output_label":  "Cerebrospinal fluid (ug/mL), Plasma concentration (ug/mL), Cervical spinal cord (ug/g), Brain (ug/g), Lumbar spinal cord (ug/g), Thoracic spinal cord (ug/g), Pons (ug/g)",
-                              "source":  "Nonhuman primate population PK study",
+                              "source":  "https://accp1.onlinelibrary.wiley.com/doi/10.1002/jcph.884",
                               "therapeutic_area":  "Neurodegenerative Disease",
                               "indication":  "Spinal Muscular Atrophy (SMA)",
                               "applications":  "CNS drug distribution prediction, dose optimization, intrathecal administration strategy evaluation, population PK analysis",

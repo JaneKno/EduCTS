@@ -10,6 +10,7 @@ data/validation/
 # Exclude PDFs and documentation files (not needed for deployment)
 *.pdf
 *.docx
+metal-direction-*.json
 
 # Local development
 .DS_Store
